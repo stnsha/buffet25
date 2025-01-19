@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -15,8 +16,24 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('location');
+            $table->string('waze_link')->nullable();
+            $table->string('gmap_link')->nullable();
+
+            $table->softDeletes();
             $table->timestamps();
         });
+
+
+        DB::table('venues')->insert([
+            [
+                'name' => 'Dewan Arena',
+                'location' => 'Ujong Pasir',
+            ],
+            [
+                'name' => 'Dewan Chermin',
+                'location' => 'Nilai',
+            ]
+        ]);
     }
 
     /**

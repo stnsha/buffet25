@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\VenuePax;
+use App\Models\PersonInCharge;
 use Illuminate\Http\Request;
 
-class VenuePaxController extends Controller
+class PersonInChargeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class VenuePaxController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(VenuePax $venuePax)
+    public function show(PersonInCharge $personInCharge)
     {
         //
     }
@@ -42,7 +42,7 @@ class VenuePaxController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(VenuePax $venuePax)
+    public function edit(PersonInCharge $personInCharge)
     {
         //
     }
@@ -50,7 +50,7 @@ class VenuePaxController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, VenuePax $venuePax)
+    public function update(Request $request, PersonInCharge $personInCharge)
     {
         //
     }
@@ -58,7 +58,7 @@ class VenuePaxController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(VenuePax $venuePax)
+    public function destroy(PersonInCharge $personInCharge)
     {
         //
     }

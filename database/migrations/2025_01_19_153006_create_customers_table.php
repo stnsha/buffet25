@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('venue_dates', function (Blueprint $table) {
+        Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('venue_id');
-            $table->dateTime('reservation_date');
-            $table->timestamps();
+            $table->string('name');
+            $table->string('phone_no');
+            $table->string('email')->nullable();
 
-            $table->foreign('venue_id')->references('id')->on('venues');
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('venue_dates');
+        Schema::dropIfExists('customers');
     }
 };

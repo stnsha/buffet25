@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\VenueDates;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 
-class VenueDatesController extends Controller
+class CustomerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class VenueDatesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(VenueDates $dates)
+    public function show(Customer $customer)
     {
         //
     }
@@ -42,7 +42,7 @@ class VenueDatesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(VenueDates $dates)
+    public function edit(Customer $customer)
     {
         //
     }
@@ -50,7 +50,7 @@ class VenueDatesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, VenueDates $dates)
+    public function update(Request $request, Customer $customer)
     {
         //
     }
@@ -58,7 +58,7 @@ class VenueDatesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(VenueDates $dates)
+    public function destroy(Customer $customer)
     {
         //
     }

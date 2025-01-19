@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('prices', function (Blueprint $table) {
+        Schema::create('discounts', function (Blueprint $table) {
             $table->id();
-            $table->string('price_type');
-            $table->double('price');
+            $table->unsignedBigInteger('price_id');
+            $table->double('new_price');
+
+            $table->softDeletes();
+            $table->foreign('price_id')->references('id')->on('prices');
             $table->timestamps();
         });
     }
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('prices');
+        Schema::dropIfExists('discounts');
     }
 };

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Venues;
+use App\Models\Discount;
 use Illuminate\Http\Request;
 
-class VenuesController extends Controller
+class DiscountController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class VenuesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Venues $venues)
+    public function show(Discount $discount)
     {
         //
     }
@@ -42,7 +42,7 @@ class VenuesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Venues $venues)
+    public function edit(Discount $discount)
     {
         //
     }
@@ -50,7 +50,7 @@ class VenuesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Venues $venues)
+    public function update(Request $request, Discount $discount)
     {
         //
     }
@@ -58,7 +58,7 @@ class VenuesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Venues $venues)
+    public function destroy(Discount $discount)
     {
         //
     }
