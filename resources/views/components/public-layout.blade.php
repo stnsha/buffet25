@@ -5,11 +5,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Buffet Ramadhan 2025</title>
+    <title>Login</title>
     @vite(['resources/js/app.js', 'resources/css/app.css'])
 </head>
 
 <body class="font-inter antialiased">
+
     {{ $slot }}
 </body>
 

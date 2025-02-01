@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CapacityController;
+use App\Http\Controllers\FormController;
 use App\Http\Controllers\PriceController;
 use App\Http\Controllers\UserAuthController;
 use App\Http\Controllers\VenueController;
@@ -10,11 +11,17 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-
 Route::controller(UserAuthController::class)->group(function () {
     Route::get('login', 'index')->name('login');
     Route::post('auth', 'login')->name('login.auth');
     Route::get('logout', 'logout')->name('logout');
+});
+
+Route::group(['prefix' => 'form'], function () {
+    Route::controller(FormController::class)->name('form.')->group(function () {
+        Route::get('arena', 'arena')->name('arena');
+        Route::get('chermin', 'chermin')->name('chermin');
+    });
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
