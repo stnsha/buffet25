@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Price;
+use App\Models\Venue;
 use Illuminate\Http\Request;
 
 class PriceController extends Controller
@@ -18,9 +19,11 @@ class PriceController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($venue_id)
     {
-        //
+        $venue_name = Venue::where('id', $venue_id)->value('name');
+
+        return view('prices.create', compact('venue_id', 'venue_name'));
     }
 
     /**
@@ -28,7 +31,22 @@ class PriceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'venue_id' => 'required|integer',
+            'price_name' => 'required|array',
+            'price' => 'required|array',
+            'price_name.*' => 'required|string',
+            'price.*' => 'required|numeric',
+        ]);
+
+        foreach ($request->price_name as $index => $name) {
+            Price::create([
+                'venue_id' => $request->venue_id,
+                'name' => $name,
+                'normal_price' => $request->price[$index],
+            ]);
+        }
+        exit;
     }
 
     /**
