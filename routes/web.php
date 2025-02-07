@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CapacityController;
 use App\Http\Controllers\FormController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PriceController;
 use App\Http\Controllers\UserAuthController;
 use App\Http\Controllers\VenueController;
@@ -47,6 +48,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::controller(PriceController::class)->name('price.')->group(function () {
             Route::get('create/{venue_id}', 'create')->name('create');
             Route::post('store', 'store')->name('store');
+        });
+    });
+
+    Route::group(['prefix' => 'order'], function () {
+        Route::controller(OrderController::class)->name('order.')->group(function () {
+            Route::get('index', 'index')->name('index');
         });
     });
 });

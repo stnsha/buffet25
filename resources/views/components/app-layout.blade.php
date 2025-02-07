@@ -67,7 +67,7 @@
                     </ul>
                 </li>
                 <li class="pl-2.5">
-                    <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg group">
+                    <a href="{{ route('order.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg group">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-5 h-5">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -79,7 +79,7 @@
                     </a>
                 </li>
                 <li class="pl-2.5">
-                    <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg group">
+                    <a href="" class="flex items-center p-2 text-gray-900 rounded-lg group">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-5 h-5">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -111,6 +111,7 @@
             {{ $slot }}
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script>
 </body>
 
 </html>

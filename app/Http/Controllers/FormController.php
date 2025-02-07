@@ -86,13 +86,6 @@ class FormController extends Controller
                         ]);
                     }
                 }
-                OrderDetails::create([
-                    'order_id' => $order_id,
-                    'price_id' => $price_id,
-                    'price' => $og_price,
-                    'quantity' => $value,
-                    'subtotal' => $validated["{$price_id}_price"] ?? 0,
-                ]);
 
                 DB::commit();
                 return redirect()->route('form.arena');

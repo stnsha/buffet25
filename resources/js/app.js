@@ -45,3 +45,12 @@ document.querySelectorAll('select[id$="_quantity"], #baby_chair').forEach(select
 
 // Initial calculation
 calculateSubtotal();
+
+//reservations table
+
+if (document.getElementById("reservations-table") && typeof simpleDatatables.DataTable !== 'undefined') {
+    const dataTable = new simpleDatatables.DataTable("#reservations-table", {
+        searchable: false,
+        perPageSelect: false
+    });
+}
