@@ -18,7 +18,9 @@ return new class extends Migration
             $table->double('subtotal');
             $table->double('discount_total');
             $table->double('total');
-            $table->string('fpx_id');
+            $table->string('fpx_id')->nullable();
+            $table->boolean('is_bchair')->default(0);
+            $table->integer('total_chair')->default(0);
             $table->integer('status')->default(1); //1 - Reserved
 
             $table->softDeletes();

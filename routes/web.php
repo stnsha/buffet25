@@ -21,6 +21,7 @@ Route::group(['prefix' => 'form'], function () {
     Route::controller(FormController::class)->name('form.')->group(function () {
         Route::get('arena', 'arena')->name('arena');
         Route::get('chermin', 'chermin')->name('chermin');
+        Route::post('store', 'store')->name('store');
     });
 });
 

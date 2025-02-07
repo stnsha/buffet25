@@ -30,6 +30,8 @@ return new class extends Migration
 
             $table->timestamps();
         });
+
+        $this->insertCapacityData();
     }
 
     /**
@@ -38,5 +40,30 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('capacities');
+    }
+
+    private function insertCapacityData()
+    {
+        $startDate = strtotime('2025-03-05 18:45:00'); // Start at 6:45 AM
+        $endDate = strtotime('2025-03-27 18:45:00');
+        $data = [];
+
+        while ($startDate <= $endDate) {
+            $data[] = [
+                'venue_id' => 1,
+                'venue_date' => date('Y-m-d H:i:s', $startDate), // DateTime format
+                'full_capacity' => 200,
+                'baby_chair' => 15,
+                'min_capacity' => 1,
+                'available_capacity' => 200,
+                'available_bchair' => 15,
+                'status' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+            $startDate = strtotime('+1 day', $startDate); // Move to the next day, same time
+        }
+
+        DB::table('capacities')->insert($data);
     }
 };

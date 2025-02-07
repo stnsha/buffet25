@@ -17,5 +17,7 @@ class Order extends Model
         'total',
         'fpx_id',
         'status',
+        'is_bchair',
+        'total_chair'
     ];
 }

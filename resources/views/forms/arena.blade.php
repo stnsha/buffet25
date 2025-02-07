@@ -1,4 +1,4 @@
-<x-form-layout>
+<x-form-layout :bgColor="request()->routeIs('form.arena') ? 'bg-[#078287]' : 'bg-[#F6F5EE]'">
     <div class="flex flex-col justify-center items-center text-center w-full">
         <img src="{{ asset('img/arena_header.png') }}" alt="arena_header" class="w-1/2 mx-auto">
         <span class="bg-[#86A173] py-4 px-52 rounded-full mt-6 font-inria text-[#F6F5EE] text-md font-normal">5 Mac 2025
@@ -31,7 +31,9 @@
             </div>
             <div class="flex flex-col border-2 border-[#86A173] w-3/4 rounded-[35px] mt-6" id="tempah-sekarang">
                 <span class="font-inria font-semibold text-lg text-slate-900 pt-4">Tempahan</span>
-                <form action="">
+                <form action="{{ route('form.store') }}" method="POST">
+                    @csrf
+                    @method('post')
                     <div class="flex flex-col mx-auto w-full pb-4 px-48">
                         <span class="font-medium text-md text-start tracking-wider pb-1">Nama<span
                                 class="text-red-600 pl-0.5">*</span></span>
@@ -41,7 +43,7 @@
                         <div class="flex flex-col w-1/2 mr-2">
                             <span class="font-medium text-md text-start tracking-wider pb-1">No. Telefon<span
                                     class="text-red-600 pl-0.5">*</span> </span>
-                            <input type="text" name="email" id="email"
+                            <input type="text" name="phone" id="phone"
                                 class="bg-gray-50 rounded-full border-0">
                         </div>
                         <div class="flex flex-col w-1/2">
@@ -79,8 +81,10 @@
                                 </select>
                             </div>
                             <div class="flex flex-col w-2/5">
-                                <input type="text" name="dewasa_price" id="{{ $price->id }}_price"
+                                <input type="text" name="{{ $price->id . '_price' }}"
+                                    id="{{ $price->id }}_price"
                                     value="{{ $price->id == 2 ? '58.00' : number_format($price->normal_price, 2) }}"
+                                    data-base-price="{{ $price->id == 2 ? 58.0 : $price->normal_price }}"
                                     class="bg-gray-50 rounded-full border-0 text-center" readonly>
                             </div>
                         </div>
@@ -114,9 +118,9 @@
                     </div>
                 </form>
             </div>
-            <div class="flex flex-row justify-evenly w-1/2 mx-auto items-center bg-[#078287] text-[#F6F5EE] rounded-3xl py-4 mt-6 px-6"
+            <div class="flex flex-row justify-evenly w-1/2 mx-auto items-center bg-[#078287] text-[#F6F5EE] rounded-3xl py-4 my-6 px-6"
                 id="hubungi-kami">
-                <div class="flex flex-col w-full justify-start px-4 bg-red-100">
+                <div class="flex flex-col w-full justify-start px-4">
                     <span class="font-inria font-medium text-md pt-2 text-start">Hubungi Kami</span>
                     <div class="flex flex-row pt-3">
                         <div class="flex flex-col mr-4">
@@ -155,7 +159,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex flex-col w-full content-start bg-blue-100 px-4">
+                <div class="flex flex-col w-full content-start px-4">
                     <span class="font-inria font-medium text-md pt-4 text-start">Lokasi Kami</span>
                     <div class="flex flex-row pt-3">
                         <div class="flex flex-col justify-start">

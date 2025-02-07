@@ -8,8 +8,9 @@
     <title>Buffet Ramadhan 2025</title>
     @vite(['resources/js/app.js', 'resources/css/app.css'])
 </head>
+@props(['footerBg' => 'bg-[#F6F5EE]', 'bodyBg' => 'bg-[#078287]'])
 
-<body class="font-inter antialiased bg-[#078287]">
+<body class="font-inter antialiased {{ $bodyBg }}">
     <nav class="mt-4">
         <div class="max-w-screen-xl flex flex-wrap items-center md:justify-center mx-auto p-4">
             <div class="flex md:order-2 justify-start">
@@ -49,6 +50,9 @@
 
 
     {{ $slot }}
+    <footer class="flex flex-row justify-center items-center {{ $footerBg }} py-2 mx-auto">
+        <span class="font-light text-xs text-slate-400">made by ans, 2025.</span>
+    </footer>
 </body>
 
 </html>

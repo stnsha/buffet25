@@ -24,6 +24,29 @@ return new class extends Migration
 
             $table->timestamps();
         });
+
+        DB::table('prices')->insert(
+            [
+                [
+                    'venue_id' => 1,
+                    'name' => 'Kanak-kanak',
+                    'normal_price' => 39,
+                    'description' => '(6-12 tahun)',
+                ],
+                [
+                    'venue_id' => 1,
+                    'name' => 'Dewasa',
+                    'normal_price' => 65,
+                    'description' => '',
+                ],
+                [
+                    'venue_id' => 1,
+                    'name' => 'Warga emas',
+                    'normal_price' => 45,
+                    'description' => '(60 & ke atas)',
+                ],
+            ]
+        );
     }
 
     /**
