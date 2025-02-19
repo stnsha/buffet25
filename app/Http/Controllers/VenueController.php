@@ -10,9 +10,8 @@ class VenueController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($venue_id)
     {
-        $venue_id = 1;
         $venue = Venue::find($venue_id);
         return view('venues.index', compact('venue', 'venue_id'));
     }

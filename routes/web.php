@@ -3,6 +3,7 @@
 use App\Http\Controllers\CapacityController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PriceController;
 use App\Http\Controllers\UserAuthController;
 use App\Http\Controllers\VenueController;
@@ -26,6 +27,14 @@ Route::group(['prefix' => 'form'], function () {
     });
 });
 
+Route::group(['prefix' => 'payment'], function () {
+    Route::controller(PaymentController::class)->name('payment.')->group(function () {
+        Route::get('createBill', 'createBill')->name('createBill');
+        Route::get('paymentStatus', 'paymentStatus')->name('paymentStatus');
+        Route::post('callback', 'callback')->name('callback');
+    });
+});
+
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
@@ -33,13 +42,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::group(['prefix' => 'venue'], function () {
         Route::controller(VenueController::class)->name('venue.')->group(function () {
-            Route::get('/', 'index')->name('index');
+            Route::get('/{venue_id}', 'index')->name('index');
         });
     });
 
     Route::group(['prefix' => 'capacity'], function () {
         Route::controller(CapacityController::class)->name('capacity.')->group(function () {
             Route::get('create/{venue_id}', 'create')->name('create');
+            Route::get('edit/{capacity_id}', 'edit')->name('edit');
             Route::post('store', 'store')->name('store');
         });
     });

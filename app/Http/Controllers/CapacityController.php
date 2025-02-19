@@ -94,9 +94,11 @@ class CapacityController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Capacity $capacity)
+    public function edit($capacity_id)
     {
-        //
+        $capacity = Capacity::find($capacity_id);
+
+        return view('capacities.edit', compact('capacity'));
     }
 
     /**

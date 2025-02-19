@@ -54,3 +54,26 @@ if (document.getElementById("reservations-table") && typeof simpleDatatables.Dat
         perPageSelect: false
     });
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    const container = document.getElementById("categories-container");
+
+    // Add new category
+    container.addEventListener("click", function (event) {
+        if (event.target.closest(".add-category")) {
+            const newItem = container.firstElementChild.cloneNode(true);
+
+            // Clear input values
+            newItem.querySelectorAll("input").forEach(input => input.value = "");
+
+            container.appendChild(newItem);
+        }
+
+        // Remove category
+        if (event.target.closest(".remove-category")) {
+            if (container.children.length > 1) {
+                event.target.closest(".category-item").remove();
+            }
+        }
+    });
+});

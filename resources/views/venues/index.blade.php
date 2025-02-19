@@ -1,23 +1,22 @@
 <x-app-layout>
     <div class="flex flex-col w-full">
-        <span class="font-medium text-lg">Venues</span>
-
+        <div class="flex flex-col w-full">
+            <span
+                class="font-medium text-lg border-b-2 border-zinc-400 pb-4">{{ $venue->name . ',' . $venue->location }}</span>
+        </div>
         <div class="flex flex-row w-full">
             <div class="flex flex-col w-full my-2">
-                <div class="flex flex-col">
-                    <span class="font-medium text-lg">{{ $venue->name . ',' . $venue->location }}</span>
-                </div>
-                <div class="flex flex-row">
+                <div class="flex flex-row justify-end items-center">
                     <a href="{{ route('capacity.create', ['venue_id' => $venue_id]) }}" type="button"
-                        class="btn-primary text-xs text-center font-regular px-4 py-1.5 rounded-lg bg-blue-100 my-2 mr-2">Add
+                        class="btn-primary text-sm text-center font-medium px-4 py-2 rounded-lg bg-zinc-300 my-2 mr-2 hover:bg-zinc-400">Add
                         Date</a>
                     <a href="{{ route('price.create', ['venue_id' => $venue_id]) }}" type="button"
-                        class="btn-primary text-xs text-center font-regular px-4 py-1.5 rounded-lg bg-blue-100 my-2 mr-2">Add
+                        class="btn-primary text-sm text-center font-medium px-4 py-2 rounded-lg bg-zinc-300 my-2 mr-2 hover:bg-zinc-400">Add
                         Price</a>
                 </div>
                 <div class="relative overflow-x-auto rounded-lg border-0">
                     <table class="w-full text-sm text-left text-[#133944]">
-                        <thead class="text-xs text-[#133944] uppercase bg-gray-300 rounded-lg">
+                        <thead class="text-xs text-[#133944] uppercase bg-zinc-300 rounded-lg">
                             <tr>
                                 <th class="text-sm text-left font-regular px-6 py-3">Date</th>
                                 <th class="text-sm text-left font-regular pl-4 py-3">Total Capacity</th>
@@ -29,7 +28,7 @@
                         </thead>
                         <tbody>
                             @foreach ($venue->capacities as $key => $cp)
-                                <tr class="odd:bg-gray-100 even:bg-gray-50 text-left">
+                                <tr class="odd:bg-zinc-100 even:bg-zinc-50 text-left">
                                     <td class="pl-6">
                                         {{ \Carbon\Carbon::parse($cp->venue_date)->format('l, d M Y, g:i a') }}</td>
                                     <td>
@@ -78,7 +77,8 @@
                                     </td>
                                     <td>
                                         <div class="flex flex-row p-2 justify-center items-center">
-                                            <a type="button" href="#" class="pr-1">
+                                            <a type="button" href="{{ route('capacity.edit', $cp->id) }}"
+                                                class="pr-1">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                                     class="w-5 h-5 text-primary hover:text-orange-400">
