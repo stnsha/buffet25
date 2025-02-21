@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Models\Order;
 use App\Models\OrderDetails;
 use App\Models\Price;
+use App\Models\Venue;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,12 +24,15 @@ class FormController extends Controller
 
     public function chermin()
     {
-        return view('forms.chermin');
+        $prices = Price::where('venue_id', 2)->get();
+        $dates = Capacity::where('venue_id', 2)->get();
+        return view('forms.chermin', compact('prices', 'dates'));
     }
 
     public function store(ReservationRequest $request)
     {
         $validated = $request->validated();
+
         DB::beginTransaction();
         try {
             if ($validated) {
@@ -50,26 +54,36 @@ class FormController extends Controller
 
                     $customer_id = $customer->id;
                 }
-                $venue_id = Capacity::find($request->selected_date)->value('venue_id');
+                $capacity = Capacity::find($request->selected_date);
+                $capacity_id = $capacity->id;
+                $venue_id = $capacity->venue_id;
                 $subtotal = $request->subtotal;
                 $disc_dewasa = $request['2_quantity'] * 7;
                 $total = $subtotal - $disc_dewasa;
 
-                $is_bchair = $request->baby_chair != 0 ? 1 : 0;
+                $is_bchair = $request->baby_chair != '0' ? true : false;
                 $total_bchair = $is_bchair != 0 ? $request->baby_chair : 0;
+
+                $code = Venue::find($venue_id)->value('code');
+
                 $order = Order::create([
+                    'ref_id' => $code,
                     'customer_id' => $customer_id,
-                    'venue_id' => $venue_id,
+                    'venue_id' => $capacity_id,
                     'subtotal' => $subtotal,
                     'discount_total' => $disc_dewasa,
                     'total' => $total,
                     'fpx_id' => null,
-                    'is_chair' => $is_bchair,
+                    'is_bchair' => $is_bchair,
                     'total_chair' => $total_bchair,
                     'status' => 1, //1 = Reserved
                 ]);
 
                 $order_id = $order->id;
+
+                $ref_id = $code . str_pad($order_id, 5, '0', STR_PAD_LEFT);
+                $order->ref_id = $ref_id;
+                $order->save();
 
                 foreach ($validated as $key => $value) {
                     if (preg_match('/(\d+)_quantity/', $key, $matches)) {
@@ -88,11 +102,18 @@ class FormController extends Controller
                 }
 
                 DB::commit();
-                return redirect()->route('form.arena');
+                return redirect()->route('payment.createBill', $order_id);
             }
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['error' => 'Failed to store order', 'message' => $e->getMessage()], 500);
         }
+    }
+
+    public function completed($order_id)
+    {
+        $order = Order::find($order_id);
+
+        return view('forms.completed', compact('order'));
     }
 }

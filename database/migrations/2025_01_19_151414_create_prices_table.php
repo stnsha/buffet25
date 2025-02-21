@@ -45,6 +45,24 @@ return new class extends Migration
                     'normal_price' => 45,
                     'description' => '(60 & ke atas)',
                 ],
+                [
+                    'venue_id' => 2,
+                    'name' => 'Kanak-kanak',
+                    'normal_price' => 39,
+                    'description' => '(6-12 tahun)',
+                ],
+                [
+                    'venue_id' => 2,
+                    'name' => 'Dewasa',
+                    'normal_price' => 69,
+                    'description' => '',
+                ],
+                [
+                    'venue_id' => 2,
+                    'name' => 'Warga emas',
+                    'normal_price' => 45,
+                    'description' => '(60 & ke atas)',
+                ],
             ]
         );
     }

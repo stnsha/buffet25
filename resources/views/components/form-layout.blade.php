@@ -8,7 +8,12 @@
     <title>Buffet Ramadhan 2025</title>
     @vite(['resources/js/app.js', 'resources/css/app.css'])
 </head>
-@props(['footerBg' => 'bg-[#F6F5EE]', 'bodyBg' => 'bg-[#078287]'])
+@props([
+    'footerBg' => 'bg-slate-100',
+    'bodyBg' => 'bg-slate-100',
+    'menuBg' => 'bg-slate-100',
+    'menuItemBg' => 'bg-slate-600',
+])
 
 <body class="font-inter antialiased {{ $bodyBg }}">
     <nav class="mt-4">
@@ -27,7 +32,7 @@
             </div>
             <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-search">
                 <ul
-                    class="flex flex-col p-4 md:p-0 font-normal text-sm border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-[#078287]">
+                    class="flex flex-col p-4 md:p-0 font-normal text-sm border border-gray-100 rounded-lg {{ $menuBg }} md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0">
                     <li>
                         <a href="#price-list"
                             class="block py-2 px-3 text-[#F6F5EE] rounded-sm md:bg-transparent md:text-[#F6F5EE] md:py-2"
@@ -35,7 +40,7 @@
                     </li>
                     <li>
                         <a href="#tempah-sekarang"
-                            class="block py-2 px-3 text-[#F6F5EE] bg-[#DAB666] bg-opacity-60 rounded-full hover:bg-gray-100 md:hover:bg-transparent md:hover:bg-[#DAB666] md:hover:bg-opacity-60 md:hover:font-medium md:py-2">Tempah
+                            class="block py-2 px-3 text-[#F6F5EE] {{ $menuItemBg }} bg-opacity-60 rounded-full hover:bg-gray-100 md:hover:bg-transparent md:hover:bg-[#DAB666] md:hover:bg-opacity-60 md:hover:font-medium md:py-2">Tempah
                             Sekarang</a>
                     </li>
                     <li>
@@ -47,9 +52,9 @@
             </div>
         </div>
     </nav>
-
-
-    {{ $slot }}
+    <div class="flex w-auto justify-center items-center">
+        {{ $slot }}
+    </div>
     <footer class="flex flex-row justify-center items-center {{ $footerBg }} py-2 mx-auto">
         <span class="font-light text-xs text-slate-400">made by ans, 2025.</span>
     </footer>

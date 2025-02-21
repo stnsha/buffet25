@@ -24,12 +24,13 @@ Route::group(['prefix' => 'form'], function () {
         Route::get('arena', 'arena')->name('arena');
         Route::get('chermin', 'chermin')->name('chermin');
         Route::post('store', 'store')->name('store');
+        Route::get('completed/{order}', 'completed')->name('completed');
     });
 });
 
 Route::group(['prefix' => 'payment'], function () {
     Route::controller(PaymentController::class)->name('payment.')->group(function () {
-        Route::get('createBill', 'createBill')->name('createBill');
+        Route::get('createBill/{orderid}', 'createBill')->name('createBill');
         Route::get('paymentStatus', 'paymentStatus')->name('paymentStatus');
         Route::post('callback', 'callback')->name('callback');
     });

@@ -13,6 +13,7 @@ class Order extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'ref_id',
         'customer_id',
         'venue_id',
         'subtotal',
@@ -34,8 +35,8 @@ class Order extends Model
         return $this->belongsTo(Customer::class, 'customer_id', 'id');
     }
 
-    public function venue(): BelongsTo
+    public function capacity(): BelongsTo
     {
-        return $this->belongsTo(Venue::class, 'venue_id', 'id');
+        return $this->belongsTo(Capacity::class, 'venue_id', 'id');
     }
 }

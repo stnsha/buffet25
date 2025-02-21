@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('customer_id');
             $table->unsignedBigInteger('venue_id');
+            $table->string('ref_id');
             $table->double('subtotal');
             $table->double('discount_total');
             $table->double('total');

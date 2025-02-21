@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('venues', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('code');
             $table->string('location');
             $table->string('waze_link')->nullable();
             $table->string('gmap_link')->nullable();
@@ -27,10 +28,12 @@ return new class extends Migration
         DB::table('venues')->insert([
             [
                 'name' => 'Dewan Arena',
+                'code' => 'ARN',
                 'location' => 'Ujong Pasir',
             ],
             [
                 'name' => 'Dewan Chermin',
+                'code' => 'CMN',
                 'location' => 'Nilai',
             ]
         ]);
