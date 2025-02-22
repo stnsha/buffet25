@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\PaymentConfirmation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -88,5 +89,42 @@ class PaymentController extends Controller
         $response = request()->all(['refno', 'status', 'reason', 'billcode', 'order_id', 'amount']);
 
         Log::info($response);
+
+        $refno = $response['refno'] ?? null;
+        $status = $response['status'] ?? null;
+        $reason = $response['reason'] ?? null;
+        $billcode = $response['billcode'] ?? null;
+        $order_ref_id = $response['order_id'] ?? null;
+        $amount = $response['amount'] ?? null;
+
+        if ($order_ref_id) {
+            // Find the order by reference ID
+            $order = Order::where('ref_id', $order_ref_id)->first();
+
+            if (!$order) {
+                return response()->json(['error' => 'Order not found'], 404);
+            }
+
+            $order_id = $order->id;
+
+            // Create a payment confirmation record
+            $payment_confirmation = PaymentConfirmation::create([
+                'order_id' => $order_id,
+                'ref_no' => $refno,
+                'status' => $status,
+                'reason' => $reason,
+                'bill_code' => $billcode,
+                'amount' => $amount,
+            ]);
+
+            // Call the update method in OrderController
+            $orderController = app(OrderController::class);
+
+            // Convert array to request before passing
+            $updateRequest = new Request($response);
+            return $orderController->update($updateRequest, $payment_confirmation->id);
+        }
+
+        return response()->json(['error' => 'Order ID not provided'], 400);
     }
 }

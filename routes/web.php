@@ -36,6 +36,12 @@ Route::group(['prefix' => 'payment'], function () {
     });
 });
 
+Route::group(['prefix' => 'order'], function () {
+    Route::controller(OrderController::class)->name('order.')->group(function () {
+        Route::put('update/{payment_confirmation_id}', 'update')->name('update');
+    });
+});
+
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
