@@ -1,10 +1,10 @@
-<x-form-layout :bgColor="request()->routeIs('form.arena') ? 'bg-[#078287]' : 'bg-[#F6F5EE]'" :menuBg="request()->routeIs('form.arena') ? 'bg-[#078287]' : 'bg-[#F6F5EE]'">
+<x-form-layout :bodyBg="request()->routeIs('form.arena') ? 'bg-[#078287]' : 'bg-[#F6F5EE]'" :menuBg="request()->routeIs('form.arena') ? 'bg-[#078287]' : 'bg-[#F6F5EE]'" :footerBg="request()->routeIs('form.arena') ? 'bg-[#F6F5EE]' : 'bg-[#F6F5EE]'" :menuItemBg="request()->routeIs('form.arena') ? 'bg-[#DAB666]' : 'bg-[#F6F5EE]'">
     <div class="flex flex-col justify-center items-center text-center w-full mr-0">
         <img src="{{ asset('img/arena_header.png') }}" alt="arena_header" class="w-full md:w-1/2 mx-auto">
         <span
-            class="bg-[#86A173] py-3 md:py-4 px-6 md:px-52 rounded-full mt-6 font-inria text-[#F6F5EE] text-sm md:text-md font-normal">5
+            class="bg-[#86A173] py-3 md:py-4 px-6 md:px-52 rounded-full mt-6 font-inria text-[#F6F5EE] text-sm md:text-lg font-normal">5
             Mac 2025 sehingga 27 Mac 2025</span>
-        <div class="flex flex-col rounded-tl-[160px] rounded-tr-[160px] justify-center items-center bg-[#F6F5EE] mt-6 w-full"
+        <div class="flex flex-col rounded-tl-[160px] rounded-tr-[160px] justify-center items-center mt-4 bg-[#F6F5EE] w-full"
             id="price-list">
             <div
                 class="flex flex-col md:flex-row justify-center md:justify-evenly items-center md:items-start px-8 mt-8 text-[#F6F5EE] font-semibold">
@@ -88,7 +88,7 @@
                                 <input type="text" name="{{ $price->id . '_price' }}"
                                     id="{{ $price->id }}_price"
                                     value="{{ $price->id == 2 ? '58.00' : number_format($price->normal_price, 2) }}"
-                                    data-base-price="{{ $price->id == 2 ? 58.0 : $price->normal_price }}"
+                                    data-base-price="{{ $price->id == 2 ? 1.0 : $price->normal_price }}"
                                     class="bg-gray-50 rounded-full border-0 text-center" readonly>
                             </div>
                         </div>
@@ -130,26 +130,26 @@
                     <div class="flex flex-col md:flex-row justify-start items-start md:items-center pt-3">
                         <div class="flex flex-col mr-4">
                             <span class="font-medium text-sm text-start tracking-wider pt-2">Myra</span>
-                            <a href="https://api.whatsapp.com/send?phone=60123456789&text=Buffet%20Arena"
-                                class="font-normal text-sm tracking-wider pt-2">+6012 345
-                                6789
+                            <a href="https://api.whatsapp.com/send?phone=60194464177&text=Buffet%20Arena"
+                                class="font-normal text-sm tracking-wider pt-2 hover:text-emerald-800 hover:underline">+6019
+                                446 4177
                             </a>
-                            <span class="font-medium text-sm text-start tracking-wider pt-2">Myra</span>
-                            <a href="https://api.whatsapp.com/send?phone=60123456789&text=Buffet%20Arena"
-                                class="font-normal text-sm tracking-wider pt-2">+6012 345
-                                6789
+                            <span class="font-medium text-sm text-start tracking-wider pt-2">Bella</span>
+                            <a href="https://api.whatsapp.com/send?phone=60193044022&text=Buffet%20Arena"
+                                class="font-normal text-sm tracking-wider pt-2 hover:text-emerald-800 hover:underline">+6019
+                                304 4022
                             </a>
                         </div>
                         <div class="flex flex-col mr-4">
-                            <span class="font-medium text-sm text-start tracking-wider pt-2">Myra</span>
-                            <a href="https://api.whatsapp.com/send?phone=60123456789&text=Buffet%20Arena"
-                                class="font-normal text-sm tracking-wider pt-2">+6012 345
-                                6789
+                            <span class="font-medium text-sm text-start tracking-wider pt-2">Linn</span>
+                            <a href="https://api.whatsapp.com/send?phone=60172469492&text=Buffet%20Arena"
+                                class="font-normal text-sm tracking-wider pt-2 hover:text-emerald-800 hover:underline">+6017
+                                246 9492
                             </a>
-                            <span class="font-medium text-sm text-start tracking-wider pt-2">Myra</span>
-                            <a href="https://api.whatsapp.com/send?phone=60123456789&text=Buffet%20Arena"
-                                class="font-normal text-sm tracking-wider pt-2">+6012 345
-                                6789
+                            <span class="font-medium text-sm text-start tracking-wider pt-2">Emy</span>
+                            <a href="https://api.whatsapp.com/send?phone=60127844505&text=Buffet%20Arena"
+                                class="font-normal text-sm tracking-wider pt-2 hover:text-emerald-800 hover:underline">+6012
+                                784 4505
                             </a>
                         </div>
                     </div>
