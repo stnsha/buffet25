@@ -21,7 +21,8 @@ class PaymentController extends Controller
         $cust_name = $order->customer->name;
         $cust_phone = $order->customer->phone_no;
         $cust_email = $order->customer->email;
-        $total_payment = $order->total * 100;
+        // $total_payment = $order->total * 100;
+        $total_payment = 100;
         $bill_name = 'Buffet Ramadan ' . $order->capacity->venue->name;
         $bill_desc = 'Tarikh booking: ' . Carbon::parse($order->capacity->venue_date)->locale('ms_MY')->format('d M Y');
         $option = array(
