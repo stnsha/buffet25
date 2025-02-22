@@ -9,27 +9,30 @@
             <div
                 class="flex flex-col md:flex-row justify-center md:justify-evenly items-center md:items-start px-8 mt-8 text-[#F6F5EE] font-semibold">
                 @foreach ($prices as $pr)
-                    <div class="flex flex-col rounded-3xl bg-[#078287] {{ $pr->id == 2 ? 'p-6' : 'p-5' }} mx-6 mb-3">
-                        <div class="flex flex-row justify-center">
-                            <span
-                                class="text-sm content-start pt-2 md:pt-4 {{ $pr->id == 2 ? 'text-[#133944]' : '' }}">RM</span>
-                            <span
-                                class="text-[35px] md:text-[55px] {{ $pr->id == 2 ? 'line-through text-[#133944]' : '' }}">{{ $pr->normal_price }}</span>
-                        </div>
-                        @if ($pr->id == 2)
+                    @if ($pr->id != 2)
+                        <div
+                            class="flex flex-col rounded-3xl bg-[#078287] {{ $pr->id == 3 ? 'p-6' : 'p-5' }} {{ $pr->id == 2 ? 'hidden' : 'block' }} mx-6 mb-3">
                             <div class="flex flex-row justify-center">
-                                <span class="text-sm content-start pt-2 md:pt-4">RM</span>
-                                <span class="text-[35px] md:text-[55px]">58</span>
+                                <span
+                                    class="text-sm content-start pt-2 md:pt-4 {{ $pr->id == 3 ? 'text-[#133944]' : '' }}">RM</span>
+                                <span
+                                    class="text-[35px] md:text-[55px] {{ $pr->id == 3 ? 'line-through text-[#133944]' : '' }}">{{ $pr->normal_price }}</span>
                             </div>
-                        @endif
-                        <span
-                            class="text-sm md:text-md uppercase tracking-widest font-normal pb-4">{{ $pr->name }}</span>
-                        @if ($pr->id == 2)
-                            <span class="text-[#F7F095] text-sm font-light italic">(sah untuk bayaran <span
-                                    class="font-bold">ONLINE</span> sahaja)</span>
-                        @endif
-                        <span class="text-sm tracking-wide font-normal">{{ $pr->description }}</span>
-                    </div>
+                            @if ($pr->id == 3)
+                                <div class="flex flex-row justify-center">
+                                    <span class="text-sm content-start pt-2 md:pt-4">RM</span>
+                                    <span class="text-[35px] md:text-[55px]">58</span>
+                                </div>
+                            @endif
+                            <span
+                                class="text-sm md:text-md uppercase tracking-widest font-normal pb-4">{{ $pr->name }}</span>
+                            @if ($pr->id == 3)
+                                <span class="text-[#F7F095] text-sm font-light italic">(sah untuk bayaran <span
+                                        class="font-bold">ONLINE</span> sahaja)</span>
+                            @endif
+                            <span class="text-sm tracking-wide font-normal">{{ $pr->description }}</span>
+                        </div>
+                    @endif
                 @endforeach
             </div>
             <div class="flex flex-col border-2 border-[#86A173] w-full md:w-3/4 rounded-[35px] mt-6"
@@ -42,6 +45,10 @@
                         <span class="font-medium text-md text-start tracking-wider pb-1">Nama<span
                                 class="text-red-600 pl-0.5">*</span></span>
                         <input type="text" name="nama" id="nama" class="bg-gray-50 rounded-full border-0">
+                        @error('nama')
+                            <span
+                                class="bg-red-100 text-red-800 text-xs font-medium me-2 mt-2 px-2.5 py-0.5 rounded-md w-fit border-lg">{{ $message }}</span>
+                        @enderror
                     </div>
                     <div class="flex flex-col md:flex-row justify-between mx-auto w-full pb-4 px-4 md:px-48">
                         <div class="flex flex-col w-full md:w-1/2 mr-2">
@@ -49,11 +56,19 @@
                                     class="text-red-600 pl-0.5">*</span> </span>
                             <input type="text" name="phone" id="phone"
                                 class="bg-gray-50 rounded-full border-0">
+                            @error('phone')
+                                <span
+                                    class="bg-red-100 text-red-800 text-xs font-medium me-2 mt-2 px-2.5 py-0.5 rounded-md w-fit border-lg">{{ $message }}</span>
+                            @enderror
                         </div>
                         <div class="flex flex-col w-full md:w-1/2">
                             <span class="font-medium text-md text-start tracking-wider pb-1">Email</span>
                             <input type="text" name="email" id="email"
                                 class="bg-gray-50 rounded-full border-0">
+                            @error('email')
+                                <span
+                                    class="bg-red-100 text-red-800 text-xs font-medium me-2 mt-2 px-2.5 py-0.5 rounded-md w-fit border-lg">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                     <div class="flex flex-col mx-auto w-full pb-4 px-4 md:px-48">
@@ -61,8 +76,11 @@
                                 class="text-red-600 pl-0.5">*</span></span>
                         <select name="selected_date" id="selected_date" class="bg-gray-50 rounded-full border-0">
                             @foreach ($dates as $dt)
-                                <option value="{{ $dt->id }}">
+                                <option value="{{ $dt->id }}" @disabled($dt->available_capacity == 0)>
                                     {{ \Carbon\Carbon::parse($dt->venue_date)->locale('ms_MY')->format('l, d M Y, g:i a') }}
+                                    @if ($dt->available_capacity < 20)
+                                        <span class="text-red-500">‼️‼️</span>
+                                    @endif
                                 </option>
                             @endforeach
                         </select>
@@ -73,13 +91,14 @@
                             <div class="flex flex-col w-full md:w-1/5 mr-4">
                                 <span
                                     class="font-medium text-md text-start tracking-wider pb-1">{{ $price->name }}<span
-                                        class="text-red-600 pl-0.5">*</span> </span>
+                                        class="text-red-600 pl-0.5">*</span></span>
+                                <span class="font-normal text-xs pt-1.5 text-start">{{ $price->description }}</span>
                             </div>
                             <div class="flex flex-col w-full md:w-2/5 mr-0 md:mr-4 mb-3 md:mb-0">
                                 <select name="{{ $price->id }}_quantity" id="{{ $price->id }}_quantity"
                                     class="bg-gray-50 rounded-full border-0">
                                     @for ($i = 0; $i <= 20; $i++)
-                                        <option value="{{ $i }}" {{ $i == 1 ? 'selected' : '' }}>
+                                        <option value="{{ $i }}" {{ $i == 0 ? 'selected' : '' }}>
                                             {{ $i }}</option>
                                     @endfor
                                 </select>
@@ -87,31 +106,15 @@
                             <div class="flex flex-col w-full md:w-2/5">
                                 <input type="text" name="{{ $price->id . '_price' }}"
                                     id="{{ $price->id }}_price"
-                                    value="{{ $price->id == 2 ? '58.00' : number_format($price->normal_price, 2) }}"
-                                    data-base-price="{{ $price->id == 2 ? 1.0 : $price->normal_price }}"
+                                    value="{{ $price->id == 3 ? '58.00' : number_format($price->normal_price, 2) }}"
+                                    data-base-price="{{ $price->id == 3 ? 58.0 : $price->normal_price }}"
                                     class="bg-gray-50 rounded-full border-0 text-center" readonly>
                             </div>
                         </div>
                     @endforeach
 
-                    <div
-                        class="flex flex-col md:flex-row justify-between items-center mx-auto w-full pb-4 px-4 md:px-48">
-                        <div class="flex flex-col w-full md:w-1/5 mr-4">
-                            <span class="font-medium text-md text-start tracking-wider pb-1">Baby chair?</span>
-                        </div>
-                        <div class="flex flex-col w-full md:w-2/5 mr-0 md:mr-4 mb-3 md:mb-0">
-                            <select name="baby_chair" id="baby_chair" class="bg-gray-50 rounded-full border-0">
-                                @for ($i = 0; $i <= 15; $i++)
-                                    <option value="{{ $i }}">{{ $i }}</option>
-                                @endfor
-                            </select>
-                        </div>
-                        <div class="flex flex-col w-full md:w-2/5">
-                            <input type="text" name="bchair_price" id="bchair_price" value="FOC"
-                                class="bg-gray-50 rounded-full border-0 text-center" readonly>
-                        </div>
-                    </div>
-
+                    <span class="font-medium text-red-500 text-xs pt-1.5 text-end">BABY CHAIR LIMITED FIRST
+                        COME FIRST SERVE</span>
                     <div class="flex flex-row justify-end items-center mx-auto w-full pb-4 px-4 md:px-48">
                         <span class="font-medium text-md text-end tracking-wider pb-1 w-3/5">Subtotal</span>
                         <input type="text" name="subtotal" id="subtotal" value="0.00"

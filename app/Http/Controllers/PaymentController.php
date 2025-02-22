@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderConfirmed;
 use App\Models\Order;
 use App\Models\PaymentConfirmation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Tarsoft\Toyyibpay\Toyyibpay;
 
 class PaymentController extends Controller
@@ -46,11 +48,11 @@ class PaymentController extends Controller
             'billChargeToCustomer' => '',
         );
 
-        $url = 'https://toyyibpay.com/index.php/api/createBill';
+        $url = 'https://dev.toyyibpay.com/index.php/api/createBill';
 
         $response = Http::asForm()->post($url, $option);
         $billCode = $response[0]['BillCode'];
-        return redirect('https://toyyibpay.com/' . $billCode);
+        return redirect('https://dev.toyyibpay.com/' . $billCode);
     }
 
     public function paymentStatus()
@@ -79,9 +81,7 @@ class PaymentController extends Controller
                 $order->status = 1;
                 break;
         }
-
         $order->save();
-
         return redirect()->route('form.completed', $order);
     }
 
@@ -117,6 +117,12 @@ class PaymentController extends Controller
                 'bill_code' => $billcode,
                 'amount' => $amount,
             ]);
+
+            if ($order->customer->email != null) {
+                Mail::to($order->customer->email)->send(new OrderConfirmed(
+                    $order,
+                ));
+            }
 
             // Call the update method in OrderController
             $orderController = app(OrderController::class);

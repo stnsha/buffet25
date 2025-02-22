@@ -106,7 +106,9 @@ class FormController extends Controller
             }
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['error' => 'Failed to store order', 'message' => $e->getMessage()], 500);
+            return redirect()->back()->withErrors(['error' => 'Failed to store order: ' . $e->getMessage()])
+                ->withInput();
+            // return response()->json(['error' => 'Failed to store order', 'message' => $e->getMessage()], 500);
         }
     }
 

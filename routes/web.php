@@ -42,6 +42,11 @@ Route::group(['prefix' => 'order'], function () {
     });
 });
 
+Route::group(['prefix' => 'capacity'], function () {
+    Route::controller(CapacityController::class)->name('capacity.')->group(function () {
+        Route::put('update/{capacity_id}', 'update')->name('update');
+    });
+});
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Capacity;
 use App\Models\Order;
+use App\Models\OrderDetails;
 use App\Models\PaymentConfirmation;
 use Illuminate\Http\Request;
 
@@ -80,6 +82,26 @@ class OrderController extends Controller
                     break;
             }
             $order->save();
+
+            if ($status == 1) {
+                $order_details = OrderDetails::where('order_id', $order->id)->get();
+                $total_quantity = $order_details->sum('quantity');
+
+                $capacity = Capacity::find($order->venue_id);
+                $new_tpaid = $capacity->total_paid + $total_quantity;
+                $new_tcap = $capacity->available_capacity - $total_quantity;
+                $capacity->total_paid = $new_tpaid;
+                $capacity->available_capacity = $new_tcap;
+                /**
+                 * status = 1 ; available
+                 * 2 = warning
+                 * 3 = sold out
+                 */
+
+                $new_tcap < 20 ?? $capacity->status = 2;
+                $new_tcap == 0 ?? $capacity->status = 3;
+                $capacity->save();
+            }
         }
     }
 

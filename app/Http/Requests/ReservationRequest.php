@@ -30,7 +30,8 @@ class ReservationRequest extends FormRequest
             '1_quantity' => ['nullable', 'integer', 'min:0'],
             '2_quantity' => ['nullable', 'integer', 'min:0'],
             '3_quantity' => ['nullable', 'integer', 'min:0'],
-            'baby_chair' => ['required', 'integer', 'min:0'],
+            '7_quantity' => ['nullable', 'integer', 'min:0'],
+            '8_quantity' => ['nullable', 'integer', 'min:0'],
 
             '4_quantity' => ['nullable', 'integer', 'min:0'],
             '5_quantity' => ['nullable', 'integer', 'min:0'],
@@ -40,10 +41,12 @@ class ReservationRequest extends FormRequest
             '1_price' => ['nullable', 'numeric', 'min:0'],
             '2_price' => ['nullable', 'numeric', 'min:0'],
 
+            '7_price' => ['nullable', 'numeric', 'min:0'],
+            '8_price' => ['nullable', 'numeric', 'min:0'],
+
             '4_price' => ['nullable', 'numeric', 'min:0'],
             '5_price' => ['nullable', 'numeric', 'min:0'],
             '6_price' => ['nullable', 'numeric', 'min:0'],
-            'bchair_price' => ['nullable', 'string', 'in:FOC'],
             'subtotal' => ['required', 'numeric', 'min:0'],
         ];
     }

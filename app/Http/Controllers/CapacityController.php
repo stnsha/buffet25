@@ -104,7 +104,7 @@ class CapacityController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Capacity $capacity)
+    public function update($capacity_id)
     {
         //
     }
