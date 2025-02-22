@@ -122,7 +122,13 @@
                         <input type="text" name="subtotal" id="subtotal" value="0.00"
                             class="bg-gray-50 rounded-full border-0 w-2/5 ml-8 text-center" readonly>
                     </div>
-                    <div class="flex flex-row justify-end items-center mx-auto w-full pb-4 px-4 md:px-48">
+                    @if ($errors->has('subtotal'))
+                        <span
+                            class="bg-red-100 text-red-800 text-xs font-medium me-2 mt-2 px-2.5 py-0.5 rounded-md w-fit border-lg text-center">
+                            {{ $errors->first('subtotal') }}
+                        </span>
+                    @endif
+                    <div class="flex flex-row justify-end items-center mx-auto w-full mt-2 pb-4 px-4 md:px-48">
                         <input type="submit" value="Bayar Sekarang"
                             class="font-medium text-md text-center tracking-wider bg-orange-100 shadow-md cursor-pointer rounded-full border-0 px-4 py-2 w-full hover:bg-orange-300 md:w-1/2">
                     </div>

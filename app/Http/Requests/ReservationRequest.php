@@ -47,7 +47,16 @@ class ReservationRequest extends FormRequest
             '4_price' => ['nullable', 'numeric', 'min:0'],
             '5_price' => ['nullable', 'numeric', 'min:0'],
             '6_price' => ['nullable', 'numeric', 'min:0'],
-            'subtotal' => ['required', 'numeric', 'min:0'],
+            'subtotal' => ['required', 'numeric', 'min:1'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'nama.required' => 'Sila isi nama anda.',
+            'phone.required' => 'Sila isi no. telefon anda.',
+            'subtotal.min' => 'Sila pilih jumlah pax sebelum membuat pembayaran.',
         ];
     }
 }
