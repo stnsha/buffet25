@@ -1,15 +1,15 @@
-<x-form-layout :footerBg="request()->routeIs('form.chermin') ? 'bg-[#FEF0BE]' : 'bg-[#F6F5EE]'" :bodyBg="request()->routeIs('form.chermin') ? 'bg-[#EB8B50]' : 'bg-[#F6F5EE]'" :menuBg="request()->routeIs('form.chermin') ? 'bg-[#EB8B50]' : 'bg-[#F6F5EE]'" :menuItemBg="request()->routeIs('form.chermin') ? 'bg-[#E6B537]' : 'bg-[#F6F5EE]'">
+<x-form-layout :footerBg="request()->routeIs('form.chermin') ? 'bg-yellow-50' : 'bg-[#F6F5EE]'" :bodyBg="request()->routeIs('form.chermin') ? 'bg-orange-800' : 'bg-[#F6F5EE]'" :menuBg="request()->routeIs('form.chermin') ? 'bg-orange-800' : 'bg-[#F6F5EE]'" :menuItemBg="request()->routeIs('form.chermin') ? 'bg-orange-400' : 'bg-[#F6F5EE]'">
     <div class="flex flex-col justify-center items-center text-center w-full mr-0">
         <img src="{{ asset('img/arena_header.png') }}" alt="arena_header" class="w-full md:w-1/2 mx-auto">
         <span
-            class="bg-[#E6B537] py-3 md:py-4 px-6 md:px-52 rounded-full mt-6 font-inria text-[#F6F5EE] text-sm md:text-lg font-normal">5
+            class="bg-orange-400 py-3 md:py-4 px-6 md:px-52 rounded-full mt-6 font-inria text-yellow-50 text-sm md:text-lg font-normal">5
             Mac 2025 sehingga 27 Mac 2025</span>
-        <div class="flex flex-col rounded-tl-[160px] rounded-tr-[160px] justify-center items-center bg-[#FEF0BE] mt-4 w-full"
+        <div class="flex flex-col rounded-tl-[160px] rounded-tr-[160px] bg-yellow-50  justify-center items-center mt-4 w-full"
             id="price-list">
             <div
-                class="flex flex-col md:flex-row justify-center md:justify-evenly items-center md:items-start px-8 mt-8 text-[#F6F5EE] font-semibold">
+                class="flex flex-col md:flex-row justify-center md:justify-evenly items-center md:items-start px-8 mt-8 text-yellow-50 font-semibold">
                 @foreach ($prices as $pr)
-                    <div class="flex flex-col rounded-3xl bg-[#F2792D] {{ $pr->id == 5 ? 'p-6' : 'p-5' }} mx-6 mb-3">
+                    <div class="flex flex-col rounded-3xl bg-orange-400 {{ $pr->id == 5 ? 'p-6' : 'p-5' }} mx-6 mb-3">
                         <div class="flex flex-row justify-center">
                             <span
                                 class="text-sm content-start pt-2 md:pt-4 {{ $pr->id == 5 ? 'text-[#133944]' : '' }}">RM</span>
@@ -25,40 +25,40 @@
                         <span
                             class="text-sm md:text-md uppercase tracking-widest font-normal pb-4">{{ $pr->name }}</span>
                         @if ($pr->id == 5)
-                            <span class="text-[#F7F095] text-sm font-light italic">(sah untuk bayaran <span
+                            <span class="text-yellow-200 text-sm font-light italic">(sah untuk bayaran <span
                                     class="font-bold">ONLINE</span> sahaja)</span>
                         @endif
                         <span class="text-sm tracking-wide font-normal">{{ $pr->description }}</span>
                     </div>
                 @endforeach
             </div>
-            <div class="flex flex-col border-2 border-[#F2792D] w-full md:w-3/4 rounded-[35px] mt-6"
-                id="tempah-sekarang">
-                <span class="font-inria font-semibold text-lg text-slate-900 pt-4">Tempahan</span>
+            <div class="flex flex-col w-full md:w-3/4 rounded-[35px] mt-6" id="tempah-sekarang">
+                <span class="font-inria font-semibold text-lg text-yellow-50 pt-4">Tempah
+                    Sekarang</span>
                 <form action="{{ route('form.store') }}" method="POST">
                     @csrf
                     @method('post')
                     <div class="flex flex-col mx-auto w-full pb-4 px-4 md:px-48">
-                        <span class="font-medium text-md text-start tracking-wider pb-1">Nama<span
+                        <span class="font-medium text-md text-start tracking-wider pb-1 text-slate-800">Nama<span
                                 class="text-red-600 pl-0.5">*</span></span>
                         <input type="text" name="nama" id="nama" class="bg-gray-50 rounded-full border-0">
                     </div>
                     <div class="flex flex-col md:flex-row justify-between mx-auto w-full pb-4 px-4 md:px-48">
                         <div class="flex flex-col w-full md:w-1/2 mr-2">
-                            <span class="font-medium text-md text-start tracking-wider pb-1">No. Telefon<span
-                                    class="text-red-600 pl-0.5">*</span> </span>
+                            <span class="font-medium text-md text-start tracking-wider pb-1 text-slate-800">No.
+                                Telefon<span class="text-red-600 pl-0.5">*</span> </span>
                             <input type="text" name="phone" id="phone"
                                 class="bg-gray-50 rounded-full border-0">
                         </div>
                         <div class="flex flex-col w-full md:w-1/2">
-                            <span class="font-medium text-md text-start tracking-wider pb-1">Email</span>
+                            <span class="font-medium text-md text-start tracking-wider pb-1 text-slate-800">Email</span>
                             <input type="text" name="email" id="email"
                                 class="bg-gray-50 rounded-full border-0">
                         </div>
                     </div>
                     <div class="flex flex-col mx-auto w-full pb-4 px-4 md:px-48">
-                        <span class="font-medium text-md text-start tracking-wider pb-1">Pilihan Tarikh<span
-                                class="text-red-600 pl-0.5">*</span></span>
+                        <span class="font-medium text-md text-start tracking-wider pb-1 text-slate-800">Pilihan
+                            Tarikh<span class="text-red-600 pl-0.5">*</span></span>
                         <select name="selected_date" id="selected_date" class="bg-gray-50 rounded-full border-0">
                             @foreach ($dates as $dt)
                                 <option value="{{ $dt->id }}">
@@ -72,7 +72,7 @@
                             class="flex flex-col md:flex-row justify-between items-center mx-auto w-full pb-4 px-4 md:px-48">
                             <div class="flex flex-col w-full md:w-1/5 mr-4">
                                 <span
-                                    class="font-medium text-md text-start tracking-wider pb-1">{{ $price->name }}<span
+                                    class="font-medium text-md text-start tracking-wider pb-1 text-slate-800">{{ $price->name }}<span
                                         class="text-red-600 pl-0.5">*</span> </span>
                             </div>
                             <div class="flex flex-col w-full md:w-2/5 mr-0 md:mr-4 mb-3 md:mb-0">
@@ -97,7 +97,8 @@
                     <div
                         class="flex flex-col md:flex-row justify-between items-center mx-auto w-full pb-4 px-4 md:px-48">
                         <div class="flex flex-col w-full md:w-1/5 mr-4">
-                            <span class="font-medium text-md text-start tracking-wider pb-1">Baby chair?</span>
+                            <span class="font-medium text-md text-start tracking-wider pb-1 text-slate-800">Baby
+                                chair?</span>
                         </div>
                         <div class="flex flex-col w-full md:w-2/5 mr-0 md:mr-4 mb-3 md:mb-0">
                             <select name="baby_chair" id="baby_chair" class="bg-gray-50 rounded-full border-0">
@@ -123,7 +124,7 @@
                     </div>
                 </form>
             </div>
-            <div class="flex flex-col md:flex-row justify-evenly w-full md:w-1/2 mx-auto items-center bg-[#F2792D] text-[#F6F5EE] rounded-3xl py-4 my-6 px-6"
+            <div class="flex flex-col md:flex-row justify-evenly w-full md:w-1/2 mx-auto items-center bg-orange-400 text-yellow-50 rounded-3xl py-4 my-6 px-6"
                 id="hubungi-kami">
                 <div class="flex flex-col w-full justify-start px-4">
                     <span class="font-inria font-medium text-md pt-2 text-start">Hubungi Kami</span>

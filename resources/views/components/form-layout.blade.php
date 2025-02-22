@@ -40,7 +40,7 @@
                     </li>
                     <li>
                         <a href="#tempah-sekarang"
-                            class="block py-2 px-3 text-[#F6F5EE] {{ $menuItemBg }} bg-opacity-60 rounded-full hover:bg-gray-100 md:hover:bg-transparent md:hover:bg-[#DAB666] md:hover:bg-opacity-60 md:hover:font-medium md:py-2">Tempah
+                            class="block py-2 px-3 text-[#F6F5EE] {{ $menuItemBg }} bg-opacity-60 rounded-full hover:bg-gray-100 md:hover:bg-transparent md:hover:bg-yellow-400 md:hover:bg-opacity-60 md:hover:font-medium md:py-2">Tempah
                             Sekarang</a>
                     </li>
                     <li>
