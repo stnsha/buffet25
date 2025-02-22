@@ -42,15 +42,13 @@ class PaymentController extends Controller
             'billPaymentChannel' => 0,
             'billContentEmail' => 'Terima kasih! Selamat berpuasa :D',
             'billChargeToCustomer' => '',
-            // 'billExpiryDate' => '17-12-2020 17:00:00',
-            // 'billExpiryDays' => 3
         );
 
-        $url = 'https://dev.toyyibpay.com/index.php/api/createBill';
+        $url = 'https://toyyibpay.com/index.php/api/createBill';
 
         $response = Http::asForm()->post($url, $option);
         $billCode = $response[0]['BillCode'];
-        return redirect('https://dev.toyyibpay.com/' . $billCode);
+        return redirect('https://toyyibpay.com/' . $billCode);
     }
 
     public function paymentStatus()
