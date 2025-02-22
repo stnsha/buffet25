@@ -1,8 +1,8 @@
-<x-form-layout :footerBg="request()->routeIs('form.chermin') ? 'bg-yellow-50' : 'bg-[#F6F5EE]'" :bodyBg="request()->routeIs('form.chermin') ? 'bg-orange-800' : 'bg-[#F6F5EE]'" :menuBg="request()->routeIs('form.chermin') ? 'bg-orange-800' : 'bg-[#F6F5EE]'" :menuItemBg="request()->routeIs('form.chermin') ? 'bg-orange-400' : 'bg-[#F6F5EE]'">
+<x-form-layout :footerBg="request()->routeIs('form.chermin') ? 'bg-yellow-50' : 'bg-[#F6F5EE]'" :bodyBg="request()->routeIs('form.chermin') ? 'bg-[#EB8B50]' : 'bg-[#F6F5EE]'" :menuBg="request()->routeIs('form.chermin') ? 'bg-[#EB8B50]' : 'bg-[#F6F5EE]'" :menuItemBg="request()->routeIs('form.chermin') ? 'bg-[#E6B537]' : 'bg-[#F6F5EE]'">
     <div class="flex flex-col justify-center items-center text-center w-full mr-0">
         <img src="{{ asset('img/chermin_header.png') }}" alt="arena_header" class="w-full md:w-1/2 mx-auto">
         <span
-            class="bg-orange-400 py-3 md:py-4 px-6 md:px-52 rounded-full mt-6 font-inria text-yellow-50 text-sm md:text-lg font-normal">5
+            class="bg-[#E6B537] py-3 md:py-4 px-6 md:px-52 rounded-full mt-6 font-inria text-yellow-50 text-sm md:text-lg font-normal">5
             Mac 2025 sehingga 27 Mac 2025</span>
         <div class="flex flex-col rounded-tl-[160px] rounded-tr-[160px] bg-yellow-50  justify-center items-center mt-4 w-full"
             id="price-list">
@@ -11,7 +11,7 @@
                 @foreach ($prices as $pr)
                     @if ($pr->id != 5)
                         <div
-                            class="flex flex-col rounded-3xl bg-orange-400 {{ $pr->id == 7 ? 'p-6' : 'p-5' }} {{ $pr->id == 5 ? 'hidden' : 'block' }} mx-6 mb-3">
+                            class="flex flex-col rounded-3xl bg-[#EB8B50] {{ $pr->id == 7 ? 'p-6' : 'p-5' }} {{ $pr->id == 5 ? 'hidden' : 'block' }} mx-6 mb-3">
                             <div class="flex flex-row justify-center">
                                 <span
                                     class="text-sm content-start pt-2 md:pt-4 {{ $pr->id == 7 ? 'text-[#133944]' : '' }}">RM</span>
@@ -134,7 +134,7 @@
                     </div>
                 </form>
             </div>
-            <div class="flex flex-col md:flex-row justify-evenly w-full md:w-1/2 mx-auto items-center bg-orange-400 text-yellow-50 rounded-3xl py-4 my-6 px-6"
+            <div class="flex flex-col md:flex-row justify-evenly w-full md:w-1/2 mx-auto items-center bg-[#EB8B50] text-yellow-50 rounded-3xl py-4 my-6 px-6"
                 id="hubungi-kami">
                 <div class="flex flex-col w-full justify-start px-4">
                     <span class="font-inria font-medium text-md pt-2 text-start">Hubungi Kami</span>

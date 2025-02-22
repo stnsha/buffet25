@@ -13,7 +13,6 @@ class Capacity extends Model
         'venue_id',
         'venue_date',
         'full_capacity',
-        'baby_chair',
         'min_capacity',
         'available_capacity',
         'total_paid',

@@ -32,7 +32,6 @@ class FormController extends Controller
     public function store(ReservationRequest $request)
     {
         $validated = $request->validated();
-
         DB::beginTransaction();
         try {
             if ($validated) {
@@ -58,11 +57,18 @@ class FormController extends Controller
                 $capacity_id = $capacity->id;
                 $venue_id = $capacity->venue_id;
                 $subtotal = $request->subtotal;
-                $disc_dewasa = $request['2_quantity'] * 7;
-                $total = $subtotal - $disc_dewasa;
 
-                $is_bchair = $request->baby_chair != '0' ? true : false;
-                $total_bchair = $is_bchair != 0 ? $request->baby_chair : 0;
+
+                if ($request['3_quantity'] != null) {
+                    $disc_dewasa = 0;
+                    $disc_dewasa += $request['3_quantity'] * 7;
+                    $subtotal += $disc_dewasa;
+                } else if ($request['7_quantity'] != null) {
+                    $disc_dewasa = 0;
+                    $disc_dewasa += $request['7_quantity'] * 6;
+                    $subtotal += $disc_dewasa;
+                }
+                $total = $request->subtotal;
 
                 $code = Venue::find($venue_id)->value('code');
 
@@ -74,8 +80,6 @@ class FormController extends Controller
                     'discount_total' => $disc_dewasa,
                     'total' => $total,
                     'fpx_id' => null,
-                    'is_bchair' => $is_bchair,
-                    'total_chair' => $total_bchair,
                     'status' => 1, //1 = Reserved
                 ]);
 
@@ -87,17 +91,19 @@ class FormController extends Controller
 
                 foreach ($validated as $key => $value) {
                     if (preg_match('/(\d+)_quantity/', $key, $matches)) {
-                        $price_id = $matches[1];
-                        $price = Price::find($price_id);
-                        $og_price = $price_id == 2 ? 58 : $price->normal_price;
+                        if ($value != 0) {
+                            $price_id = $matches[1];
+                            $price = Price::find($price_id);
+                            $og_price = ($price_id == 3) ? 58 : (($price_id == 7) ? 63 : $price->normal_price);
 
-                        OrderDetails::create([
-                            'order_id' => $order_id,
-                            'price_id' => $price_id,
-                            'price' => $og_price,
-                            'quantity' => $value,
-                            'subtotal' => $validated["{$price_id}_price"] ?? 0,
-                        ]);
+                            OrderDetails::create([
+                                'order_id' => $order_id,
+                                'price_id' => $price_id,
+                                'price' => $og_price,
+                                'quantity' => $value,
+                                'subtotal' => $validated["{$price_id}_price"] ?? 0,
+                            ]);
+                        }
                     }
                 }
 

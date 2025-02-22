@@ -17,7 +17,6 @@ return new class extends Migration
             $table->unsignedBigInteger('venue_id');
             $table->dateTime('venue_date');
             $table->integer('full_capacity')->default(0);
-            $table->integer('baby_chair')->default(0);
             $table->integer('min_capacity')->default(1);
             $table->integer('available_capacity')->default(0);
             $table->integer('available_bchair')->default(0);
@@ -54,7 +53,6 @@ return new class extends Migration
                     'venue_id' => $venueId,
                     'venue_date' => date('Y-m-d H:i:s', $startDate),
                     'full_capacity' => 200,
-                    'baby_chair' => 15,
                     'min_capacity' => 1,
                     'available_capacity' => 200,
                     'status' => 1,
