@@ -50,7 +50,7 @@
 
         .location-links {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             align-items: center;
             gap: 10px;
             padding-top: 12px;
@@ -117,10 +117,11 @@
                         </span>
                     </div>
                     <div class="location-links">
-                        <a href="https://maps.app.goo.gl/NjjdFE6aAvrjcrT39"><img src="{{ asset('img/gmaps.png') }}"
-                                alt="google maps" class="w-[100px]"></a>
-                        <a href="https://waze.com/ul/hw22x86f1n"><img src="{{ asset('img/waze.png') }}" alt="waze"
+                        <a href="https://maps.app.goo.gl/NjjdFE6aAvrjcrT39"><img
+                                src="https://cahyamatacatering.com/img/gmaps.png" alt="google maps"
                                 class="w-[100px]"></a>
+                        <a href="https://waze.com/ul/hw22x86f1n"><img src="https://cahyamatacatering.com/img/waze.png"
+                                alt="waze" class="w-[100px]"></a>
                     </div>
                 </div>
             @else

@@ -44,7 +44,7 @@ class PaymentController extends Controller
             'billSplitPayment' => 0,
             'billSplitPaymentArgs' => '',
             'billPaymentChannel' => 0,
-            'billContentEmail' => 'Terima kasih! Selamat berpuasa :D',
+            // 'billContentEmail' => 'Terima kasih! Selamat berpuasa :D',
             'billChargeToCustomer' => '',
         );
 
