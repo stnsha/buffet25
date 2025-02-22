@@ -57,7 +57,6 @@ return new class extends Migration
                     'baby_chair' => 15,
                     'min_capacity' => 1,
                     'available_capacity' => 200,
-                    'available_bchair' => 15,
                     'status' => 1,
                     'created_at' => now(),
                     'updated_at' => now(),

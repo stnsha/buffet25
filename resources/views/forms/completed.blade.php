@@ -34,26 +34,26 @@
                         <div class="flex flex-col md:flex-row justify-start items-start md:items-center pt-3">
                             <div class="flex flex-col mr-4">
                                 <span class="font-medium text-sm text-start tracking-wider pt-2">Myra</span>
-                                <a href="https://api.whatsapp.com/send?phone=60123456789&text=Buffet%20Arena"
-                                    class="font-normal text-sm tracking-wider pt-2">+6012 345
-                                    6789
+                                <a href="https://api.whatsapp.com/send?phone=60194464177&text=Buffet%20Arena"
+                                    class="font-normal text-sm tracking-wider pt-2 hover:text-indigo-800 hover:underline">+6019
+                                    446 4177
                                 </a>
-                                <span class="font-medium text-sm text-start tracking-wider pt-2">Myra</span>
-                                <a href="https://api.whatsapp.com/send?phone=60123456789&text=Buffet%20Arena"
-                                    class="font-normal text-sm tracking-wider pt-2">+6012 345
-                                    6789
+                                <span class="font-medium text-sm text-start tracking-wider pt-2">Bella</span>
+                                <a href="https://api.whatsapp.com/send?phone=60193044022&text=Buffet%20Arena"
+                                    class="font-normal text-sm tracking-wider pt-2 hover:text-indigo-800 hover:underline">+6019
+                                    304 4022
                                 </a>
                             </div>
                             <div class="flex flex-col mr-4">
-                                <span class="font-medium text-sm text-start tracking-wider pt-2">Myra</span>
-                                <a href="https://api.whatsapp.com/send?phone=60123456789&text=Buffet%20Arena"
-                                    class="font-normal text-sm tracking-wider pt-2">+6012 345
-                                    6789
+                                <span class="font-medium text-sm text-start tracking-wider pt-2">Linn</span>
+                                <a href="https://api.whatsapp.com/send?phone=60172469492&text=Buffet%20Arena"
+                                    class="font-normal text-sm tracking-wider pt-2 hover:text-indigo-800 hover:underline">+6017
+                                    246 9492
                                 </a>
-                                <span class="font-medium text-sm text-start tracking-wider pt-2">Myra</span>
-                                <a href="https://api.whatsapp.com/send?phone=60123456789&text=Buffet%20Arena"
-                                    class="font-normal text-sm tracking-wider pt-2">+6012 345
-                                    6789
+                                <span class="font-medium text-sm text-start tracking-wider pt-2">Emy</span>
+                                <a href="https://api.whatsapp.com/send?phone=60127844505&text=Buffet%20Arena"
+                                    class="font-normal text-sm tracking-wider pt-2 hover:text-indigo-800 hover:underline">+6012
+                                    784 4505
                                 </a>
                             </div>
                         </div>

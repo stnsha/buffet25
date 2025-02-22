@@ -16,7 +16,6 @@ class Capacity extends Model
         'baby_chair',
         'min_capacity',
         'available_capacity',
-        'available_bchair',
         'total_paid',
         'total_reserved',
         'status',
