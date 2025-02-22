@@ -28,7 +28,7 @@ class OrderConfirmed extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Order Confirmed for'
+            subject: 'CMC Ramadan Buffet 2025 #' . $this->order->ref_id
         );
     }
 
