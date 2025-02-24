@@ -42,11 +42,6 @@ Route::group(['prefix' => 'order'], function () {
     });
 });
 
-Route::group(['prefix' => 'capacity'], function () {
-    Route::controller(CapacityController::class)->name('capacity.')->group(function () {
-        Route::put('update/{capacity_id}', 'update')->name('update');
-    });
-});
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
@@ -62,7 +57,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::controller(CapacityController::class)->name('capacity.')->group(function () {
             Route::get('create/{venue_id}', 'create')->name('create');
             Route::get('edit/{capacity_id}', 'edit')->name('edit');
+            Route::get('export/{capacity_id}', 'export')->name('export');
             Route::post('store', 'store')->name('store');
+            Route::put('update/{capacity_id}', 'update')->name('update');
+            Route::get('destroy/{capacity_id}', 'destroy')->name('destroy');
         });
     });
 

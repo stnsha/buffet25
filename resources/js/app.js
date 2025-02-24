@@ -21,14 +21,6 @@ function calculateSubtotal() {
         subtotal += totalPrice;
     });
 
-    // Baby chair calculation (if applicable)
-    const babyChairSelect = document.getElementById('baby_chair');
-    if (babyChairSelect) {
-        const babyChairQuantity = parseInt(babyChairSelect.value) || 0;
-        const babyChairPrice = 0; // Modify if necessary
-        subtotal += babyChairQuantity * babyChairPrice;
-    }
-
     // Update subtotal
     const subtotalField = document.getElementById('subtotal');
     if (subtotalField) {
@@ -48,12 +40,13 @@ calculateSubtotal();
 
 //reservations table
 
-if (document.getElementById("reservations-table") && typeof simpleDatatables.DataTable !== 'undefined') {
-    const dataTable = new simpleDatatables.DataTable("#reservations-table", {
-        searchable: false,
-        perPageSelect: false
-    });
-}
+// if (document.getElementById("reservations-table") && typeof simpleDatatables.DataTable !== 'undefined') {
+//     const dataTable = new simpleDatatables.DataTable("#reservations-table", {
+//         searchable: true,
+//         perPageSelect: true
+//     });
+// }
+
 
 document.addEventListener("DOMContentLoaded", function () {
     const container = document.getElementById("categories-container");
@@ -77,3 +70,4 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+

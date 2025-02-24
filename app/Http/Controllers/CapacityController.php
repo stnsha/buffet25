@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\OrderExport;
 use App\Models\Capacity;
+use App\Models\Order;
 use App\Models\Venue;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CapacityController extends Controller
 {
@@ -37,7 +40,6 @@ class CapacityController extends Controller
             'from_date' => 'required|date|after_or_equal:today',
             'to_date' => 'required|date|after:from_date',
             'full_capacity' => 'required|integer',
-            'baby_chair' => 'required|integer',
             'status' => 'required|integer',
         ]);
         if ($validated) {
@@ -64,10 +66,8 @@ class CapacityController extends Controller
                     'venue_id' => $data['venue_id'],
                     'venue_date' => $current_date,
                     'full_capacity' => $data['full_capacity'],
-                    'baby_chair' => $data['baby_chair'],
                     'min_capacity' => 1,
                     'available_capacity' => $data['full_capacity'],
-                    'available_bchair' => $data['baby_chair'],
                     'status' => $data['status'],
                 ];
 
@@ -78,17 +78,63 @@ class CapacityController extends Controller
             if (!empty($capacity_data)) {
                 Capacity::insert($capacity_data);
             }
+
+            return redirect()->route('venue.index', $data['venue_id'])->with('success', 'New date successfully created!');
         }
-        exit;
-        return redirect()->route('venue.index');
     }
 
     /**
-     * Display the specified resource.
+     * Export the specified resource.
      */
-    public function show(Capacity $capacity)
+    public function export($venue_id)
     {
-        //
+        $orders = Order::where('venue_id', $venue_id)->where('status', 2)->get();
+        $results = [];
+
+        $capacity = Capacity::find($venue_id);
+
+        if ($orders) {
+            foreach ($orders as $od) {
+                switch ($od->status) {
+                    case 1:
+                        $status = 'Reserved';
+                        break;
+                    case 2:
+                        $status = 'Paid';
+                        break;
+                    case 3:
+                        $status = 'Pending Payment';
+                        break;
+                    default:
+                        $status = 'Failed';
+                        break;
+                }
+                $order_details = [];
+                foreach ($od->order_details as $odt) {
+                    $order_details[$od->id][] = [
+                        'price_name' => $odt->hasPrice->name,
+                        'price' => $odt->price,
+                        'quantity' => $odt->quantity,
+                        'subtotal' => $odt->subtotal
+                    ];
+                }
+
+                $results[$capacity->venue->name][] = [
+                    'order_id' => $od->ref_id,
+                    'customer_name' => $od->customer->name ?? null,
+                    'customer_phone' => $od->customer->phone_no ?? null,
+                    'customer_email' => $od->customer->email ?? null,
+                    'total_payment' => $od->total,
+                    'toyyibpay_ref' => $od->fpx_id,
+                    'status' => $status,
+                    'order_details' => $order_details
+                ];
+            }
+
+            $file_name = $capacity->venue->name . '-' . date('y-M-d', strtotime($capacity->venue_date)) . '.xlsx';
+
+            return Excel::download(new OrderExport($results, $capacity->venue->name, $capacity->venue_date), $file_name);
+        }
     }
 
     /**
@@ -104,16 +150,32 @@ class CapacityController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update($capacity_id)
+    public function update(Request $request, $capacity_id)
     {
-        //
+        $capacity = Capacity::find($capacity_id);
+        if ($capacity) {
+            $capacity->full_capacity = $request['full_capacity'];
+            $capacity->min_capacity = $request['min_capacity'];
+            $capacity->available_capacity = $request['available_capacity'];
+            $capacity->total_paid = $request['total_paid'];
+            $capacity->total_reserved = $request['total_reserved'];
+            $capacity->status = $request['status'];
+            $capacity->save();
+
+            return redirect()->route('venue.index', $capacity->venue_id)->with('success', 'Update successful!');
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Capacity $capacity)
+    public function destroy($capacity_id)
     {
-        //
+        $capacity = Capacity::find($capacity_id);
+        if ($capacity) {
+            $capacity->delete();
+            $capacity->save();
+            return redirect()->route('venue.index', $capacity->venue_id)->with('success', 'Delete successful!');
+        }
     }
 }

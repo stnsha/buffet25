@@ -19,7 +19,6 @@ return new class extends Migration
             $table->integer('full_capacity')->default(0);
             $table->integer('min_capacity')->default(1);
             $table->integer('available_capacity')->default(0);
-            $table->integer('available_bchair')->default(0);
             $table->integer('total_paid')->default(0);
             $table->integer('total_reserved')->default(0);
             $table->integer('status')->default(1); //1 - Available

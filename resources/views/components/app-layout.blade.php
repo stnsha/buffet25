@@ -9,7 +9,8 @@
     @vite(['resources/js/app.js', 'resources/css/app.css'])
 </head>
 
-<body class="font-inter antialiased bg-zinc-200">
+<body
+    class="font-inter antialiased bg-zinc-100 absolute -z-10 inset-0 h-full w-full bg-[radial-gradient(circle,#73737350_1px,transparent_1px)] bg-[size:20px_20px]">
     <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar"
         type="button"
         class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-zinc-100 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -22,12 +23,13 @@
         </svg>
     </button>
     <aside id="default-sidebar"
-        class="fixed top-0 left-0 z-40 w-60 h-screen border-r-4 bg-zinc-400 transition-transform -translate-x-full sm:translate-x-0"
+        class="fixed top-0 left-0 z-40 w-60 h-screen border-r-4 border-zinc-300 transition-transform -translate-x-full sm:translate-x-0"
         aria-label="Sidebar">
         <div class="h-full px-3 py-4 overflow-y-auto bg-zinc-50">
             <ul class="space-y-2 font-medium">
                 <li class="pl-2.5">
-                    <a href="{{ route('dashboard') }}"
+                    {{-- {{ route('dashboard') }} --}}
+                    <a href="#"
                         class="flex items-center p-2 rounded-lg group hover:bg-zinc-100 hover:text-gray-900 {{ request()->routeIs('dashboard') ? 'bg-zinc-300 text-gray-900' : 'text-gray-700' }}">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-5 h-5">
@@ -81,18 +83,17 @@
                         <span class="ml-2 text-sm">Bookings</span>
                     </a>
                 </li>
-                <li class="pl-2.5">
-                    <a href=""
-                        class="flex items-center p-2 hover:bg-zinc-100 hover:text-gray-900 {{ request()->routeIs('order.index') ? 'bg-zinc-300 text-gray-900' : 'text-gray-700' }} rounded-lg group">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-5 h-5">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
-                        </svg>
+                {{-- <li class="pl-2.5">
+                <a href="" class="flex items-center p-2 hover:bg-zinc-100 hover:text-gray-900  rounded-lg group {{ request()->routeIs('order.index') ? 'bg-zinc-300 text-gray-900' : 'text-gray-700' }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
+                    </svg>
 
-                        <span class="ml-2 text-sm">Customers</span>
-                    </a>
-                </li>
+                    <span class="ml-2 text-sm">Customers</span>
+                </a>
+                </li> --}}
                 <li class="pl-2.5">
                     <a href="{{ route('logout') }}"
                         class="flex items-center p-2 text-gray-700 hover:bg-zinc-100 hover:text-gray-900 rounded-lg group">

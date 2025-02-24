@@ -35,7 +35,7 @@ return new class extends Migration
                 ],
                 [
                     'venue_id' => 1,
-                    'name' => 'Kanak-kanak',
+                    'name' => 'Kerusi kanak-kanak',
                     'normal_price' => 10,
                     'description' => '(5 tahun dan ke bawah)',
                 ],
@@ -53,7 +53,7 @@ return new class extends Migration
                 ],
                 [
                     'venue_id' => 2,
-                    'name' => 'Kanak-kanak',
+                    'name' => 'Kerusi kanak-kanak',
                     'normal_price' => 10,
                     'description' => '(5 tahun dan ke bawah)',
                 ],

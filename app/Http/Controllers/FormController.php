@@ -72,6 +72,12 @@ class FormController extends Controller
 
                 $code = Venue::find($venue_id)->value('code');
 
+                /**
+                 * 1 - Reserved
+                 * 2 - Paid
+                 * 3 - Pending
+                 * 4 - Fail
+                 */
                 $order = Order::create([
                     'ref_id' => $code,
                     'customer_id' => $customer_id,
