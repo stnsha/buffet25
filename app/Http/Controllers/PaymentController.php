@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Tarsoft\Toyyibpay\Toyyibpay;
+use App\Mail\OrderConfirmed;
+use Illuminate\Support\Facades\Mail;
 
 class PaymentController extends Controller
 {
@@ -134,6 +136,11 @@ class PaymentController extends Controller
                 $order->save();
 
                 if ($status == 1) {
+                    if ($order->customer->email != null) {
+                        Mail::to($order->customer->email)->send(new OrderConfirmed(
+                            $order,
+                        ));
+                    }
                     $order_details = OrderDetails::where('order_id', $order->id)->get();
                     $total_quantity = $order_details->sum('quantity');
 
