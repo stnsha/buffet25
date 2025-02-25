@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Mail\OrderConfirmed;
+use App\Models\Capacity;
 use App\Models\Order;
+use App\Models\OrderDetails;
 use App\Models\PaymentConfirmation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -16,7 +18,6 @@ class PaymentController extends Controller
 {
     public function createBill($orderid)
     {
-
         $order = Order::find($orderid);
 
         $ref_id = $order->ref_id;
@@ -24,7 +25,6 @@ class PaymentController extends Controller
         $cust_phone = $order->customer->phone_no;
         $cust_email = $order->customer->email;
         $total_payment = $order->total * 100;
-        // $total_payment = 100;
         $bill_name = 'Buffet Ramadan ' . $order->capacity->venue->name;
         $bill_desc = 'Tarikh booking: ' . Carbon::parse($order->capacity->venue_date)->locale('ms_MY')->format('d M Y');
         $option = array(
@@ -78,7 +78,7 @@ class PaymentController extends Controller
                 $order->status = 4;
                 break;
             default:
-                $order->status = 1;
+                $order->status = 4;
                 break;
         }
         $order->save();
@@ -118,18 +118,41 @@ class PaymentController extends Controller
                 'amount' => $amount,
             ]);
 
-            if ($order->customer->email != null) {
-                Mail::to($order->customer->email)->send(new OrderConfirmed(
-                    $order,
-                ));
+            if ($payment_confirmation) {
+                $order = Order::find($payment_confirmation->order_id);
+                switch ($status) {
+                    case '1':
+                        $order->status = 2;
+                        break;
+                    case '3':
+                        $order->status = 4;
+                        break;
+                    default:
+                        $order->status = 4;
+                        break;
+                }
+                $order->save();
+
+                if ($status == 1) {
+                    $order_details = OrderDetails::where('order_id', $order->id)->get();
+                    $total_quantity = $order_details->sum('quantity');
+
+                    $capacity = Capacity::find($order->venue_id);
+                    $new_tpaid = $capacity->total_paid + $total_quantity;
+                    $new_tcap = $capacity->available_capacity - $new_tpaid;
+                    $capacity->total_paid = $new_tpaid;
+                    $capacity->available_capacity = $new_tcap;
+                    /**
+                     * status = 1 ; available
+                     * 2 = warning
+                     * 3 = sold out
+                     */
+
+                    $new_tcap < 20 ?? $capacity->status = 2;
+                    $new_tcap == 0 ?? $capacity->status = 3;
+                    $capacity->save();
+                }
             }
-
-            // Call the update method in OrderController
-            $orderController = app(OrderController::class);
-
-            // Convert array to request before passing
-            $updateRequest = new Request($response);
-            return $orderController->update($updateRequest, $payment_confirmation->id);
         }
 
         return response()->json(['error' => 'Order ID not provided'], 400);

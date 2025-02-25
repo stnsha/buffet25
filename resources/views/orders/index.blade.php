@@ -10,7 +10,7 @@
                     <thead class="text-xs text-[#133944] uppercase bg-zinc-300 rounded-lg">
                         <tr>
                             <th class="text-sm text-left font-regular px-6 py-3 whitespace-nowrap">Order ID</th>
-                            <th class="text-sm text-left font-regular px-6 py-3 whitespace-nowrap">Venue</th>
+                            <th class="text-sm text-left font-regular px-6 py-3 whitespace-nowrap">Venue & Date</th>
                             <th class="text-sm text-left font-regular px-6 py-3 whitespace-nowrap">Customer Details</th>
                             <th class="text-sm text-left font-regular px-6 py-3 whitespace-nowrap">Pax Details</th>
                             <th class="text-sm text-left font-regular px-6 py-3 whitespace-nowrap">Status</th>
@@ -39,12 +39,16 @@
                             @endphp
                             <tr class="odd:bg-zinc-100 even:bg-zinc-50 text-left">
                                 <td class="p-4">
-                                    <a href="#"
-                                        class="font-medium text-sm uppercase text-slate-900 hover:underline hover:text-slate-800">#{{ $od->ref_id }}</a>
+                                    <span
+                                        class="font-medium text-sm uppercase text-slate-900">#{{ $od->ref_id }}</span>
                                 </td>
                                 <td class="p-4">
-                                    <span
-                                        class="font-normal text-sm uppercase text-slate-900">{{ $od->capacity->venue->name }}</span>
+                                    <div class="flex flex-col justify-center items-start ">
+                                        <span
+                                            class="font-normal text-sm uppercase text-slate-900">{{ $od->capacity->venue->name }}</span>
+                                        <span class="font-normal text-sm uppercase text-slate-900">
+                                            {{ \Carbon\Carbon::parse($od->capacity->venue_date)->locale('ms_MY')->format('l, d M Y, g:i a') }}</span>
+                                    </div>
                                 </td>
                                 <td class="p-4">
                                     <span class="font-normal text-sm uppercase text-slate-900">{{ $od->customer->name }}
@@ -68,7 +72,7 @@
 
                                 <td class="p-4">
                                     <span
-                                        class="font-normal text-sm text-slate-900 px-4 py-2 rounded-md {{ $statusClass }}">
+                                        class="font-normal text-sm text-slate-900 px-5 py-1 rounded-md {{ $statusClass }}">
                                         {{ $statusLabel }}
                                     </span>
                                 </td>

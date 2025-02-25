@@ -70,7 +70,8 @@ class FormController extends Controller
                 }
                 $total = $request->subtotal;
 
-                $code = Venue::find($venue_id)->value('code');
+                $venue = Venue::find($venue_id);
+                $code = $venue->code;
 
                 /**
                  * 1 - Reserved

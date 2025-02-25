@@ -76,9 +76,10 @@
                                 class="text-red-600 pl-0.5">*</span></span>
                         <select name="selected_date" id="selected_date" class="bg-gray-50 rounded-full border-0">
                             @foreach ($dates as $dt)
-                                <option value="{{ $dt->id }}" @disabled($dt->available_capacity == 0)>
+                                <option value="{{ $dt->id }}" @disabled($dt->available_capacity == 0)
+                                    data-capacity="{{ $dt->available_capacity }}">
                                     {{ \Carbon\Carbon::parse($dt->venue_date)->locale('ms_MY')->format('l, d M Y, g:i a') }}
-                                    @if ($dt->available_capacity < 20)
+                                    @if ($dt->available_capacity < 50)
                                         <span class="text-red-500">‼️‼️</span>
                                     @endif
                                 </option>
@@ -187,4 +188,133 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get form and submit button
+            const form = document.querySelector('form');
+            const submitButton = form.querySelector('input[type="submit"]');
+
+            // Get date select and quantity fields
+            const dateSelect = document.getElementById('selected_date');
+
+            // Update the PHP code to include data attributes with available capacity
+            // In your Blade template, modify the options to include:
+            // <option value="{{ $dt->id }}" @disabled($dt->available_capacity == 0) data-capacity="{{ $dt->available_capacity }}" data-venue="{{ $dt->venue_id }}">
+
+            // Function to update total price
+            function updateTotal() {
+                let subtotal = 0;
+
+                // Loop through all price inputs and calculate subtotal
+                document.querySelectorAll('input[id$="_price"]').forEach(priceInput => {
+                    const priceId = priceInput.id.split('_')[0];
+                    const quantitySelect = document.getElementById(priceId + '_quantity');
+
+                    if (quantitySelect) {
+                        const quantity = parseInt(quantitySelect.value) || 0;
+                        const basePrice = parseFloat(priceInput.getAttribute('data-base-price')) || 0;
+
+                        subtotal += quantity * basePrice;
+                    }
+                });
+
+                // Update subtotal field
+                const subtotalField = document.getElementById('subtotal');
+                if (subtotalField) {
+                    subtotalField.value = subtotal.toFixed(2);
+                }
+            }
+
+            // Add event listeners to all quantity selects to update prices
+            document.querySelectorAll('select[id$="_quantity"]').forEach(quantitySelect => {
+                quantitySelect.addEventListener('change', updateTotal);
+            });
+
+            // Initialize total
+            updateTotal();
+
+            // Form submission validation
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    if (!dateSelect) {
+                        console.error('Date select element not found');
+                        return;
+                    }
+
+                    // Get selected date option
+                    const selectedOption = dateSelect.options[dateSelect.selectedIndex];
+                    if (!selectedOption) {
+                        console.error('No date selected');
+                        return;
+                    }
+
+                    // Extract the available capacity from the selected option's data attribute
+                    // If the data attribute isn't available, fall back to checking if the option is disabled
+                    const availableCapacity = selectedOption.dataset.capacity ?
+                        parseInt(selectedOption.dataset.capacity) :
+                        (selectedOption.disabled ? 0 : 100);
+
+                    // Determine which price options to include in the total based on route
+                    // We'll use the current route to determine the venue
+                    const isArenaRoute = window.location.href.includes('arena');
+
+                    // Calculate total quantity
+                    let totalQuantity = 0;
+
+                    // Based on your original logic: arena uses prices 1-4, chermin uses prices 5-8
+                    if (isArenaRoute) {
+                        ['1_quantity', '2_quantity', '3_quantity', '4_quantity'].forEach(id => {
+                            const el = document.getElementById(id);
+                            if (el) {
+                                totalQuantity += parseInt(el.value || 0);
+                            }
+                        });
+                    } else {
+                        ['5_quantity', '6_quantity', '7_quantity', '8_quantity'].forEach(id => {
+                            const el = document.getElementById(id);
+                            if (el) {
+                                totalQuantity += parseInt(el.value || 0);
+                            }
+                        });
+                    }
+
+                    // Check if total quantity is 0
+                    if (totalQuantity === 0) {
+                        e.preventDefault(); // Prevent form submission
+                        showErrorMessage('Sila pilih sekurang-kurangnya satu seat.');
+                        return;
+                    }
+
+                    // Check if total quantity exceeds available capacity
+                    if (totalQuantity > availableCapacity) {
+                        e.preventDefault(); // Prevent form submission
+                        showErrorMessage(
+                            `Maaf, jumlah seat melebihi kapasiti tersedia (${availableCapacity} seat sahaja). Sila kurangkan bilangan seat.`
+                        );
+                    }
+
+                    // Helper function to show error message
+                    function showErrorMessage(message) {
+                        // Create or update error message
+                        let errorMessage = document.getElementById('capacity-error');
+                        if (!errorMessage) {
+                            errorMessage = document.createElement('span');
+                            errorMessage.id = 'capacity-error';
+                            errorMessage.className =
+                                'bg-red-100 text-red-800 text-xs font-medium me-2 mt-2 px-2.5 py-0.5 rounded-md w-fit border-lg';
+                            errorMessage.style.display = 'block';
+                            errorMessage.style.margin = '0 auto';
+                            errorMessage.style.marginBottom = '10px';
+                            errorMessage.style.padding = '8px 16px';
+
+                            // Insert before the submit button's parent div
+                            submitButton.parentElement.before(errorMessage);
+                        }
+
+                        errorMessage.textContent = message;
+                    }
+                });
+            }
+        });
+    </script>
 </x-form-layout>
