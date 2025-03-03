@@ -37,4 +37,9 @@ class Order extends Model
     {
         return $this->belongsTo(Capacity::class, 'venue_id', 'id');
     }
+
+    public function payment_confirmation(): HasOne
+    {
+        return $this->hasOne(PaymentConfirmation::class, 'order_id', 'id');
+    }
 }

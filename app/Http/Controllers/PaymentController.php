@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Tarsoft\Toyyibpay\Toyyibpay;
-use App\Mail\OrderConfirmed;
-use Illuminate\Support\Facades\Mail;
 
 class PaymentController extends Controller
 {
@@ -84,14 +82,19 @@ class PaymentController extends Controller
                 break;
         }
         $order->save();
-        return redirect()->route('form.completed', $order);
+
+        if ($status_id == 1) {
+            return redirect()->route('form.completed', $order);
+        } else {
+            return redirect()->route('form.failed');
+        }
     }
 
     public function callback()
     {
         $response = request()->all(['refno', 'status', 'reason', 'billcode', 'order_id', 'amount']);
 
-        Log::info($response);
+        // Log::info($response);
 
         $refno = $response['refno'] ?? null;
         $status = $response['status'] ?? null;
@@ -136,11 +139,7 @@ class PaymentController extends Controller
                 $order->save();
 
                 if ($status == 1) {
-                    if ($order->customer->email != null) {
-                        Mail::to($order->customer->email)->send(new OrderConfirmed(
-                            $order,
-                        ));
-                    }
+
                     $order_details = OrderDetails::where('order_id', $order->id)->get();
                     $total_quantity = $order_details->sum('quantity');
 

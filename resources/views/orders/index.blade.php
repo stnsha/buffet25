@@ -3,7 +3,12 @@
         <div class="flex flex-col w-full">
             <span class="font-medium text-md border-b-2 border-zinc-400 pb-2">Confirmed Bookings</span>
         </div>
-        <div class="flex flex-col w-full my-8">
+        @if (session('success'))
+            <div class="flex w-auto bg-green-200 text-green-800 ml-4 mr-8 my-2 rounded-md">
+                <span class="font-medium text-sm px-4 py-2">{{ session('success') }}</span>
+            </div>
+        @endif
+        <div class="flex flex-col w-full mt-2 mb-8">
             <div class="relative overflow-x-auto rounded-lg border-0">
                 <table class="w-full text-sm text-left text-[#133944] rounded-md" id="reservations-table"
                     style="table-layout: auto;">
@@ -48,6 +53,9 @@
                                             class="font-normal text-sm uppercase text-slate-900">{{ $od->capacity->venue->name }}</span>
                                         <span class="font-normal text-sm uppercase text-slate-900">
                                             {{ \Carbon\Carbon::parse($od->capacity->venue_date)->locale('ms_MY')->format('l, d M Y, g:i a') }}</span>
+                                        <a href="{{ route('order.edit', $od) }}"
+                                            class="font-medium text-xs border-1 border-zinc-300 shadow-md bg-white mt-3 py-0.5 px-2 rounded-md cursor-pointer hover:bg-zinc-100">Edit
+                                            date</a>
                                     </div>
                                 </td>
                                 <td class="p-4">

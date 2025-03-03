@@ -131,4 +131,9 @@ class FormController extends Controller
 
         return view('forms.completed', compact('order'));
     }
+
+    public function failed()
+    {
+        return view('forms.failed', compact('order'));
+    }
 }

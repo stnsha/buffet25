@@ -25,6 +25,7 @@ Route::group(['prefix' => 'form'], function () {
         Route::get('chermin', 'chermin')->name('chermin');
         Route::post('store', 'store')->name('store');
         Route::get('completed/{order}', 'completed')->name('completed');
+        Route::get('failed', 'failed')->name('failed');
     });
 });
 
@@ -33,12 +34,6 @@ Route::group(['prefix' => 'payment'], function () {
         Route::get('createBill/{orderid}', 'createBill')->name('createBill');
         Route::get('paymentStatus', 'paymentStatus')->name('paymentStatus');
         Route::post('callback', 'callback')->name('callback');
-    });
-});
-
-Route::group(['prefix' => 'order'], function () {
-    Route::controller(OrderController::class)->name('order.')->group(function () {
-        Route::put('update/{payment_confirmation_id}', 'update')->name('update');
     });
 });
 
@@ -74,6 +69,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::group(['prefix' => 'order'], function () {
         Route::controller(OrderController::class)->name('order.')->group(function () {
             Route::get('index', 'index')->name('index');
+            Route::get('edit/{order}', 'edit')->name('edit');
+            Route::put('update/{order}', 'update')->name('update');
         });
     });
 });
