@@ -267,19 +267,19 @@
 
                     // Based on your original logic: arena uses prices 1-4, chermin uses prices 5-8
                     if (isArenaRoute) {
-                        ['1_quantity', '2_quantity', '3_quantity', '4_quantity'].forEach(
+                        ['1_quantity', '2_quantity', '3_quantity', '4_quantity', '9_quantity'].forEach(
                             id => {
                                 const el = document.getElementById(id);
                                 if (el) {
-                                    let value = parseInt(el.value || 0);
+                                    totalQuantity += parseInt(el.value || 0);
                                 }
                             });
                     } else {
-                        ['5_quantity', '6_quantity', '7_quantity', '8_quantity'].forEach(
+                        ['5_quantity', '6_quantity', '7_quantity', '8_quantity', '10_quantity'].forEach(
                             id => {
                                 const el = document.getElementById(id);
                                 if (el) {
-                                    let value = parseInt(el.value || 0);
+                                    totalQuantity += parseInt(el.value || 0);
                                 }
                             });
                     }
