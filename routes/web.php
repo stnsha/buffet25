@@ -56,6 +56,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::post('store', 'store')->name('store');
             Route::put('update/{capacity_id}', 'update')->name('update');
             Route::get('destroy/{capacity_id}', 'destroy')->name('destroy');
+            Route::get('calcPax', 'calcPax')->name('calcPax');
         });
     });
 
