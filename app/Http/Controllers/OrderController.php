@@ -17,6 +17,7 @@ class OrderController extends Controller
     {
         $orders = Order::whereIn('status', [2, 4])
             ->with(['customer', 'order_details', 'payment_confirmation'])
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return view('orders.index', compact('orders'));

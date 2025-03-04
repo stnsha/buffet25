@@ -53,14 +53,22 @@
                                             class="font-normal text-sm uppercase text-slate-900">{{ $od->capacity->venue->name }}</span>
                                         <span class="font-normal text-sm uppercase text-slate-900">
                                             {{ \Carbon\Carbon::parse($od->capacity->venue_date)->locale('ms_MY')->format('l, d M Y, g:i a') }}</span>
-                                        <a href="{{ route('order.edit', $od) }}"
-                                            class="font-medium text-xs border-1 border-zinc-300 shadow-md bg-white mt-3 py-0.5 px-2 rounded-md cursor-pointer hover:bg-zinc-100">Edit
-                                            date</a>
+                                        @if ($od->status != 4)
+                                            <a href="{{ route('order.edit', $od) }}"
+                                                class="font-medium text-xs border-1 border-zinc-300 shadow-md bg-white mt-3 py-0.5 px-2 rounded-md cursor-pointer hover:bg-zinc-100">Edit
+                                                date</a>
+                                        @endif
                                     </div>
                                 </td>
                                 <td class="p-4">
-                                    <span class="font-normal text-sm uppercase text-slate-900">{{ $od->customer->name }}
-                                    </span>
+                                    <div class="flex flex-col">
+                                        <span class="font-medium text-sm uppercase text-slate-900">
+                                            {{ $od->customer->name }}
+                                        </span>
+                                        <span class="font-normal text-sm uppercase text-slate-900">
+                                            {{ $od->customer->phone_no }}
+                                        </span>
+                                    </div>
                                 </td>
                                 <td class="p-4">
                                     <div class="flex flex-col">
@@ -78,18 +86,22 @@
                                     </div>
                                 </td>
 
-                                <td class="flex flex-col justify-center items-center text-center p-4">
-                                    <span
-                                        class="font-normal text-sm text-slate-900 px-5 py-1 rounded-md {{ $statusClass }}">
-                                        {{ $statusLabel }}
-                                    </span>
-                                    @if ($od->status == 4)
-                                        <span class="font-normal text-xs text-slate-900 px-5 py-1">
-                                            Sebab: <br>
-                                            {{ $od->payment_confirmation != null ? $od->payment_confirmation->reason : '' }}
+                                <td class="p-4">
+                                    <div class="flex flex-col justify-center items-center text-center ">
+                                        <span
+                                            class="font-normal text-sm text-slate-900 px-5 py-1 rounded-md {{ $statusClass }}">
+                                            {{ $statusLabel }}
                                         </span>
-                                    @endif
-
+                                        @if ($od->status == 4)
+                                            <span class="font-normal text-xs text-slate-900 px-5 py-1">
+                                                Reason: <br>
+                                                {{ $od->payment_confirmation != null ? $od->payment_confirmation->reason : '' }}
+                                            </span>
+                                        @else
+                                            <span class="font-normal text-xs text-slate-900 px-5 py-1">Bill Code:<br>
+                                                {{ $od->fpx_id }}</span>
+                                        @endif
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
