@@ -10,6 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class CapacityPaxJob implements ShouldQueue
 {
@@ -20,6 +21,7 @@ class CapacityPaxJob implements ShouldQueue
      */
     public function handle(): void
     {
+        Log::info('CRON starting...');
         $order_details = OrderDetails::with('order')
             ->whereHas('order', function ($query) {
                 $query->where('status', 2);
@@ -60,5 +62,6 @@ class CapacityPaxJob implements ShouldQueue
 
             $capacity->save();
         }
+        Log::info('CRON finished.');
     }
 }
