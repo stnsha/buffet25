@@ -76,8 +76,7 @@
                                 class="text-red-600 pl-0.5">*</span></span>
                         <select name="selected_date" id="selected_date" class="bg-gray-50 rounded-full border-0">
                             @foreach ($dates as $dt)
-                                <option value="{{ $dt->id }}" @disabled($dt->available_capacity == 0)
-                                    data-capacity="{{ $dt->available_capacity }}">
+                                <option value="{{ $dt->id }}" data-capacity="{{ $dt->available_capacity }}">
                                     {{ \Carbon\Carbon::parse($dt->venue_date)->locale('ms_MY')->format('l, d M Y, g:i a') }}
                                     @if ($dt->available_capacity < 50)
                                         <span class="text-red-500">‼️‼️</span>
@@ -86,6 +85,7 @@
                             @endforeach
                         </select>
                     </div>
+
                     @foreach ($prices as $price)
                         <div
                             class="flex flex-col md:flex-row justify-between items-center mx-auto w-full pb-4 px-4 md:px-48">
@@ -98,17 +98,6 @@
                             <div class="flex flex-col w-full md:w-2/5 mr-0 md:mr-4 mb-3 md:mb-0">
                                 <select name="{{ $price->id }}_quantity" id="{{ $price->id }}_quantity"
                                     class="bg-gray-50 rounded-full border-0">
-                                    @if ($price->id < 9)
-                                        @for ($i = 0; $i <= 500; $i++)
-                                            <option value="{{ $i }}" {{ $i == 0 ? 'selected' : '' }}>
-                                                {{ $i }}</option>
-                                        @endfor
-                                    @else
-                                        @for ($i = 0; $i <= 20; $i++)
-                                            <option value="{{ $i * 20 }}" {{ $i == 0 ? 'selected' : '' }}>
-                                                {{ $i }}</option>
-                                        @endfor
-                                    @endif
                                 </select>
                             </div>
                             <div class="flex flex-col w-full md:w-2/5">
@@ -324,6 +313,34 @@
                     }
                 });
             }
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const dateSelect = document.getElementById("selected_date");
+            const quantitySelects = document.querySelectorAll("[id$='_quantity']");
+
+            function updateQuantityOptions() {
+                const selectedOption = dateSelect.options[dateSelect.selectedIndex];
+                const capacity = selectedOption.getAttribute("data-capacity") || 630; // Default 630 if not found
+
+                quantitySelects.forEach(select => {
+                    select.innerHTML = ""; // Clear existing options
+
+                    for (let i = 0; i <= capacity; i++) {
+                        let option = document.createElement("option");
+                        option.value = i;
+                        option.textContent = i;
+                        select.appendChild(option);
+                    }
+                });
+            }
+
+            // Initial load
+            updateQuantityOptions();
+
+            // Update when date changes
+            dateSelect.addEventListener("change", updateQuantityOptions);
         });
     </script>
 </x-form-layout>

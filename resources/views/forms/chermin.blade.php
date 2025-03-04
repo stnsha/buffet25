@@ -73,52 +73,39 @@
                         </div>
                     </div>
                     <div class="flex flex-col mx-auto w-full pb-4 px-4 md:px-48">
-                        <span class="font-medium text-md text-start tracking-wider pb-1 text-slate-800">Pilihan
-                            Tarikh<span class="text-red-600 pl-0.5">*</span></span>
+                        <span class="font-medium text-md text-start tracking-wider pb-1">Pilihan Tarikh<span
+                                class="text-red-600 pl-0.5">*</span></span>
                         <select name="selected_date" id="selected_date" class="bg-gray-50 rounded-full border-0">
                             @foreach ($dates as $dt)
-                                <option value="{{ $dt->id }}"
-                                    {{ $dt->available_capacity < 1 ? 'disabled' : '' }}
-                                    data-capacity="{{ $dt->available_capacity }}">
+                                <option value="{{ $dt->id }}" data-capacity="{{ $dt->available_capacity }}">
                                     {{ \Carbon\Carbon::parse($dt->venue_date)->locale('ms_MY')->format('l, d M Y, g:i a') }}
                                     @if ($dt->available_capacity < 50)
                                         <span class="text-red-500">‼️‼️</span>
                                     @endif
                                 </option>
                             @endforeach
-
                         </select>
                     </div>
+
                     @foreach ($prices as $price)
                         <div
                             class="flex flex-col md:flex-row justify-between items-center mx-auto w-full pb-4 px-4 md:px-48">
                             <div class="flex flex-col w-full md:w-1/5 mr-4">
                                 <span
-                                    class="font-medium text-md text-start tracking-wider pb-1 text-slate-800">{{ $price->name }}<span
-                                        class="text-red-600 pl-0.5">*</span> </span>
+                                    class="font-medium text-md text-start tracking-wider pb-1">{{ $price->name }}<span
+                                        class="text-red-600 pl-0.5">*</span></span>
                                 <span class="font-normal text-xs pt-1.5 text-start">{{ $price->description }}</span>
                             </div>
                             <div class="flex flex-col w-full md:w-2/5 mr-0 md:mr-4 mb-3 md:mb-0">
                                 <select name="{{ $price->id }}_quantity" id="{{ $price->id }}_quantity"
                                     class="bg-gray-50 rounded-full border-0">
-                                    @if ($price->id < 9)
-                                        @for ($i = 0; $i <= 500; $i++)
-                                            <option value="{{ $i }}" {{ $i == 0 ? 'selected' : '' }}>
-                                                {{ $i }}</option>
-                                        @endfor
-                                    @else
-                                        @for ($i = 0; $i <= 20; $i++)
-                                            <option value="{{ $i * 20 }}" {{ $i == 0 ? 'selected' : '' }}>
-                                                {{ $i }}</option>
-                                        @endfor
-                                    @endif
                                 </select>
                             </div>
                             <div class="flex flex-col w-full md:w-2/5">
                                 <input type="text" name="{{ $price->id . '_price' }}"
                                     id="{{ $price->id }}_price"
-                                    value="{{ $price->id == 7 ? '63.00' : number_format($price->normal_price, 2) }}"
-                                    data-base-price="{{ $price->id == 7 ? 63.0 : $price->normal_price }}"
+                                    value="{{ $price->id == 3 ? '58.00' : number_format($price->normal_price, 2) }}"
+                                    data-base-price="{{ $price->id == 3 ? 58.0 : $price->normal_price }}"
                                     class="bg-gray-50 rounded-full border-0 text-center" readonly>
                             </div>
                         </div>
@@ -272,12 +259,12 @@
                     // Based on your original logic: arena uses prices 1-4, chermin uses prices 5-8
                     if (isArenaRoute) {
                         ['1_quantity', '2_quantity', '3_quantity', '4_quantity', '9_quantity'].forEach(
-                        id => {
-                            const el = document.getElementById(id);
-                            if (el) {
-                                totalQuantity += parseInt(el.value || 0);
-                            }
-                        });
+                            id => {
+                                const el = document.getElementById(id);
+                                if (el) {
+                                    totalQuantity += parseInt(el.value || 0);
+                                }
+                            });
                     } else {
                         ['5_quantity', '6_quantity', '7_quantity', '8_quantity', '10_quantity'].forEach(
                             id => {
@@ -325,6 +312,34 @@
                     }
                 });
             }
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const dateSelect = document.getElementById("selected_date");
+            const quantitySelects = document.querySelectorAll("[id$='_quantity']");
+
+            function updateQuantityOptions() {
+                const selectedOption = dateSelect.options[dateSelect.selectedIndex];
+                const capacity = selectedOption.getAttribute("data-capacity") || 526; // Default 630 if not found
+
+                quantitySelects.forEach(select => {
+                    select.innerHTML = ""; // Clear existing options
+
+                    for (let i = 0; i <= capacity; i++) {
+                        let option = document.createElement("option");
+                        option.value = i;
+                        option.textContent = i;
+                        select.appendChild(option);
+                    }
+                });
+            }
+
+            // Initial load
+            updateQuantityOptions();
+
+            // Update when date changes
+            dateSelect.addEventListener("change", updateQuantityOptions);
         });
     </script>
 </x-form-layout>
