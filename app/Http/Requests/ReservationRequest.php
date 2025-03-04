@@ -32,6 +32,8 @@ class ReservationRequest extends FormRequest
             '3_quantity' => ['nullable', 'integer', 'min:0'],
             '7_quantity' => ['nullable', 'integer', 'min:0'],
             '8_quantity' => ['nullable', 'integer', 'min:0'],
+            '9_quantity' => ['nullable', 'integer', 'min:0'],
+            '10_quantity' => ['nullable', 'integer', 'min:0'],
 
             '4_quantity' => ['nullable', 'integer', 'min:0'],
             '5_quantity' => ['nullable', 'integer', 'min:0'],
@@ -47,6 +49,8 @@ class ReservationRequest extends FormRequest
             '4_price' => ['nullable', 'numeric', 'min:0'],
             '5_price' => ['nullable', 'numeric', 'min:0'],
             '6_price' => ['nullable', 'numeric', 'min:0'],
+            '9_price' => ['nullable', 'numeric', 'min:0'],
+            '10_price' => ['nullable', 'numeric', 'min:0'],
             'subtotal' => ['required', 'numeric', 'min:1'],
         ];
     }

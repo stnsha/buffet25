@@ -78,11 +78,18 @@
                                     </div>
                                 </td>
 
-                                <td class="p-4">
+                                <td class="flex flex-col justify-center items-center text-center p-4">
                                     <span
                                         class="font-normal text-sm text-slate-900 px-5 py-1 rounded-md {{ $statusClass }}">
                                         {{ $statusLabel }}
                                     </span>
+                                    @if ($od->status == 4)
+                                        <span class="font-normal text-xs text-slate-900 px-5 py-1">
+                                            Sebab: <br>
+                                            {{ $od->payment_confirmation != null ? $od->payment_confirmation->reason : '' }}
+                                        </span>
+                                    @endif
+
                                 </td>
                             </tr>
                         @endforeach

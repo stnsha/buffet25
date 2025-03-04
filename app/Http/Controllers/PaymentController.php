@@ -44,6 +44,8 @@ class PaymentController extends Controller
             'billSplitPayment' => 0,
             'billSplitPaymentArgs' => '',
             'billPaymentChannel' => 0,
+            'enableFPXB2B' => 1,
+            'chargeFPXB2B' => 1,
             // 'billContentEmail' => 'Terima kasih! Selamat berpuasa :D',
             'billChargeToCustomer' => '',
         );

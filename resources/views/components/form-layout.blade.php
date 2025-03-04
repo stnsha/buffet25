@@ -55,7 +55,7 @@
     <div class="flex w-auto justify-center items-center">
         {{ $slot }}
     </div>
-    <footer class="flex flex-row justify-center items-center {{ $footerBg }} py-2 mx-auto">
+    <footer class="flex flex-row justify-center items-center {{ $footerBg }} py-2 mx-auto mt-12">
         <span class="font-light text-xs text-slate-400">made by ans, 2025.</span>
     </footer>
 </body>

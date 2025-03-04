@@ -101,10 +101,17 @@
                             <div class="flex flex-col w-full md:w-2/5 mr-0 md:mr-4 mb-3 md:mb-0">
                                 <select name="{{ $price->id }}_quantity" id="{{ $price->id }}_quantity"
                                     class="bg-gray-50 rounded-full border-0">
-                                    @for ($i = 0; $i <= 20; $i++)
-                                        <option value="{{ $i }}" {{ $i == 0 ? 'selected' : '' }}>
-                                            {{ $i }}</option>
-                                    @endfor
+                                    @if ($price->id < 9)
+                                        @for ($i = 0; $i <= 500; $i++)
+                                            <option value="{{ $i }}" {{ $i == 0 ? 'selected' : '' }}>
+                                                {{ $i }}</option>
+                                        @endfor
+                                    @else
+                                        @for ($i = 0; $i <= 20; $i++)
+                                            <option value="{{ $i * 20 }}" {{ $i == 0 ? 'selected' : '' }}>
+                                                {{ $i }}</option>
+                                        @endfor
+                                    @endif
                                 </select>
                             </div>
                             <div class="flex flex-col w-full md:w-2/5">
@@ -264,19 +271,21 @@
 
                     // Based on your original logic: arena uses prices 1-4, chermin uses prices 5-8
                     if (isArenaRoute) {
-                        ['1_quantity', '2_quantity', '3_quantity', '4_quantity'].forEach(id => {
+                        ['1_quantity', '2_quantity', '3_quantity', '4_quantity', '9_quantity'].forEach(
+                        id => {
                             const el = document.getElementById(id);
                             if (el) {
                                 totalQuantity += parseInt(el.value || 0);
                             }
                         });
                     } else {
-                        ['5_quantity', '6_quantity', '7_quantity', '8_quantity'].forEach(id => {
-                            const el = document.getElementById(id);
-                            if (el) {
-                                totalQuantity += parseInt(el.value || 0);
-                            }
-                        });
+                        ['5_quantity', '6_quantity', '7_quantity', '8_quantity', '10_quantity'].forEach(
+                            id => {
+                                const el = document.getElementById(id);
+                                if (el) {
+                                    totalQuantity += parseInt(el.value || 0);
+                                }
+                            });
                     }
 
                     // Check if total quantity is 0

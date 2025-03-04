@@ -59,6 +59,8 @@ class FormController extends Controller
                 $subtotal = $request->subtotal;
 
 
+
+
                 if ($request['3_quantity'] != null) {
                     $disc_dewasa = 0;
                     $disc_dewasa += $request['3_quantity'] * 7;
@@ -102,6 +104,9 @@ class FormController extends Controller
                             $price_id = $matches[1];
                             $price = Price::find($price_id);
                             $og_price = ($price_id == 3) ? 58 : (($price_id == 7) ? 63 : $price->normal_price);
+                            if (($price_id == 9 || $price_id == 10) && $value == 20) {
+                                $value += 1;
+                            }
 
                             OrderDetails::create([
                                 'order_id' => $order_id,
@@ -134,6 +139,6 @@ class FormController extends Controller
 
     public function failed()
     {
-        return view('forms.failed', compact('order'));
+        return view('forms.failed');
     }
 }

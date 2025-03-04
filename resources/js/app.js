@@ -31,7 +31,7 @@ function calculateSubtotal() {
 }
 
 // Attach event listeners
-document.querySelectorAll('select[id$="_quantity"], #baby_chair').forEach(select => {
+document.querySelectorAll('select[id$="_quantity"]').forEach(select => {
     select.addEventListener('change', calculateSubtotal);
 });
 

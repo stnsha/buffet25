@@ -15,7 +15,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::where('status', 2)->with(['customer', 'order_details'])->get();
+        $orders = Order::whereIn('status', [2, 4])
+            ->with(['customer', 'order_details', 'payment_confirmation'])
+            ->get();
 
         return view('orders.index', compact('orders'));
     }
