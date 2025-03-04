@@ -26,7 +26,6 @@ class OrderExport implements FromArray, WithHeadings, WithTitle, WithEvents
         return [
             ["{$this->venueName} ({$this->venueDate})"], // Dynamic Title
             [ // Column headers
-                'Venue',
                 'Order ID',
                 'Customer Name',
                 'Phone',
@@ -56,7 +55,6 @@ class OrderExport implements FromArray, WithHeadings, WithTitle, WithEvents
                 foreach ($order['order_details'] as $details) {
                     foreach ($details as $detail) {
                         $data[] = [
-                            $venue,
                             $order['order_id'],
                             $order['customer_name'],
                             $order['customer_phone'],

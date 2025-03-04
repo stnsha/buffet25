@@ -96,9 +96,18 @@
                                 <span class="font-normal text-xs pt-1.5 text-start">{{ $price->description }}</span>
                             </div>
                             <div class="flex flex-col w-full md:w-2/5 mr-0 md:mr-4 mb-3 md:mb-0">
-                                <select name="{{ $price->id }}_quantity" id="{{ $price->id }}_quantity"
-                                    class="bg-gray-50 rounded-full border-0">
-                                </select>
+                                @if ($price->id < 9)
+                                    <select name="{{ $price->id }}_quantity" id="{{ $price->id }}_quantity"
+                                        class="bg-gray-50 rounded-full border-0">
+                                    </select>
+                                @else
+                                    <select name="{{ $price->id }}_quantity" id="{{ $price->id }}_quantity"
+                                        class="bg-gray-50 rounded-full border-0">
+                                        @for ($i = 0; $i <= 20; $i++)
+                                            <option value={{ $i * 20 }}>{{ $i }}</option>
+                                        @endfor
+                                    </select>
+                                @endif
                             </div>
                             <div class="flex flex-col w-full md:w-2/5">
                                 <input type="text" name="{{ $price->id . '_price' }}"
@@ -322,9 +331,13 @@
 
             function updateQuantityOptions() {
                 const selectedOption = dateSelect.options[dateSelect.selectedIndex];
-                const capacity = selectedOption.getAttribute("data-capacity") || 630; // Default 630 if not found
+                const capacity = selectedOption.getAttribute("data-capacity") || 630; // Default 526 if not found
 
                 quantitySelects.forEach(select => {
+                    if (select.id === "9_quantity" || select.id === "10_quantity") {
+                        return; // Skip updating 9_quantity and 10_quantity
+                    }
+
                     select.innerHTML = ""; // Clear existing options
 
                     for (let i = 0; i <= capacity; i++) {

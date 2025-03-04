@@ -97,15 +97,24 @@
                                 <span class="font-normal text-xs pt-1.5 text-start">{{ $price->description }}</span>
                             </div>
                             <div class="flex flex-col w-full md:w-2/5 mr-0 md:mr-4 mb-3 md:mb-0">
-                                <select name="{{ $price->id }}_quantity" id="{{ $price->id }}_quantity"
-                                    class="bg-gray-50 rounded-full border-0">
-                                </select>
+                                @if ($price->id < 9)
+                                    <select name="{{ $price->id }}_quantity" id="{{ $price->id }}_quantity"
+                                        class="bg-gray-50 rounded-full border-0">
+                                    </select>
+                                @else
+                                    <select name="{{ $price->id }}_quantity" id="{{ $price->id }}_quantity"
+                                        class="bg-gray-50 rounded-full border-0">
+                                        @for ($i = 0; $i <= 20; $i++)
+                                            <option value={{ $i * 20 }}>{{ $i }}</option>
+                                        @endfor
+                                    </select>
+                                @endif
                             </div>
                             <div class="flex flex-col w-full md:w-2/5">
                                 <input type="text" name="{{ $price->id . '_price' }}"
                                     id="{{ $price->id }}_price"
-                                    value="{{ $price->id == 3 ? '58.00' : number_format($price->normal_price, 2) }}"
-                                    data-base-price="{{ $price->id == 3 ? 58.0 : $price->normal_price }}"
+                                    value="{{ $price->id == 7 ? '63.00' : number_format($price->normal_price, 2) }}"
+                                    data-base-price="{{ $price->id == 7 ? 63.0 : $price->normal_price }}"
                                     class="bg-gray-50 rounded-full border-0 text-center" readonly>
                             </div>
                         </div>
@@ -258,22 +267,23 @@
 
                     // Based on your original logic: arena uses prices 1-4, chermin uses prices 5-8
                     if (isArenaRoute) {
-                        ['1_quantity', '2_quantity', '3_quantity', '4_quantity', '9_quantity'].forEach(
+                        ['1_quantity', '2_quantity', '3_quantity', '4_quantity'].forEach(
                             id => {
                                 const el = document.getElementById(id);
                                 if (el) {
-                                    totalQuantity += parseInt(el.value || 0);
+                                    let value = parseInt(el.value || 0);
                                 }
                             });
                     } else {
-                        ['5_quantity', '6_quantity', '7_quantity', '8_quantity', '10_quantity'].forEach(
+                        ['5_quantity', '6_quantity', '7_quantity', '8_quantity'].forEach(
                             id => {
                                 const el = document.getElementById(id);
                                 if (el) {
-                                    totalQuantity += parseInt(el.value || 0);
+                                    let value = parseInt(el.value || 0);
                                 }
                             });
                     }
+
 
                     // Check if total quantity is 0
                     if (totalQuantity === 0) {
@@ -321,9 +331,13 @@
 
             function updateQuantityOptions() {
                 const selectedOption = dateSelect.options[dateSelect.selectedIndex];
-                const capacity = selectedOption.getAttribute("data-capacity") || 526; // Default 630 if not found
+                const capacity = selectedOption.getAttribute("data-capacity") || 526; // Default 526 if not found
 
                 quantitySelects.forEach(select => {
+                    if (select.id === "9_quantity" || select.id === "10_quantity") {
+                        return; // Skip updating 9_quantity and 10_quantity
+                    }
+
                     select.innerHTML = ""; // Clear existing options
 
                     for (let i = 0; i <= capacity; i++) {

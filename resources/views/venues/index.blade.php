@@ -57,15 +57,8 @@
                                     </td>
                                     <td>
                                         <div class="flex flex-col p-2">
-                                            <div class="flex flex-row">
-                                                <span class="text-sm font-medium pr-4">Total Reserved:</span>
-                                                <span class="text-sm font-normal text-end">
-                                                    {{ $cp->total_reserved }}</span>
-                                            </div>
-                                            <div class="flex flex-row">
-                                                <span class="text-sm font-medium pr-[46px]">Total Paid</span>
-                                                <span class="text-sm font-normal text-end">{{ $cp->total_paid }}</span>
-                                            </div>
+                                            <span class="text-sm font-normal text-start">{{ $cp->total_paid }}
+                                                pax</span>
                                         </div>
                                     </td>
                                     <td>
