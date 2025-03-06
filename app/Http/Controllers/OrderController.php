@@ -6,6 +6,7 @@ use App\Models\Capacity;
 use App\Models\Order;
 use App\Models\OrderDetails;
 use App\Models\PaymentConfirmation;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -19,6 +20,8 @@ class OrderController extends Controller
             ->with(['customer', 'order_details', 'payment_confirmation'])
             ->orderBy('created_at', 'desc')
             ->get();
+
+        $this->updateStatus();
 
         return view('orders.index', compact('orders'));
     }
@@ -96,6 +99,26 @@ class OrderController extends Controller
     public function destroy(Order $order)
     {
         //
+    }
+
+    public function updateStatus()
+    {
+        $payment_confirmations = PaymentConfirmation::with(['order'])
+            ->where('status', 1)
+            ->whereHas('order')
+            ->get();
+
+        foreach ($payment_confirmations as $pc) {
+            if ($pc->order && $pc->order->status != 2) {
+                $pc->order->status = 2;
+                $pc->order->fpx_id = $pc->bill_code;
+                $pc->order->save();
+            }
+        }
+
+        Capacity::where('status', '!=', 2)
+            ->where('venue_date', '<', Carbon::today())
+            ->update(['status' => 2]);
     }
 }
 /**

@@ -18,7 +18,7 @@ class FormController extends Controller
     public function arena()
     {
         $prices = Price::where('venue_id', 1)->get();
-        $dates = Capacity::where('venue_id', 1)->get();
+        $dates = Capacity::where('venue_id', 1)->where('status', 1)->get();
         return view('forms.arena', compact('prices', 'dates'));
     }
 

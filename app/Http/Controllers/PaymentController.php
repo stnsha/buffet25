@@ -50,11 +50,11 @@ class PaymentController extends Controller
             'billChargeToCustomer' => '',
         );
 
-        $url = 'https://toyyibpay.com/index.php/api/createBill';
+        $url = 'https://dev.toyyibpay.com/index.php/api/createBill';
 
         $response = Http::asForm()->post($url, $option);
         $billCode = $response[0]['BillCode'];
-        return redirect('https://toyyibpay.com/' . $billCode);
+        return redirect('https://dev.toyyibpay.com/' . $billCode);
     }
 
     public function paymentStatus()
