@@ -25,7 +25,7 @@ class FormController extends Controller
     public function chermin()
     {
         $prices = Price::where('venue_id', 2)->get();
-        $dates = Capacity::where('venue_id', 2)->get();
+        $dates = Capacity::where('venue_id', 2)->where('status', 1)->get();
         return view('forms.chermin', compact('prices', 'dates'));
     }
 
