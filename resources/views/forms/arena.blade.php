@@ -132,6 +132,13 @@
                             {{ $errors->first('subtotal') }}
                         </span>
                     @endif
+                    @if ($errors->has('payment_failed'))
+                        <span
+                            class="bg-red-100 text-red-800 text-xs font-medium me-2 mt-2 px-2.5 py-0.5 rounded-md w-fit border-lg text-center">
+                            {{ $errors->first('payment_failed') }}
+                        </span>
+                    @endif
+
                     <div class="flex flex-row justify-end items-center mx-auto w-full pb-4 mt-2 px-4 md:px-48">
                         <input type="submit" value="Bayar Sekarang"
                             class="font-medium text-md text-center tracking-wider bg-emerald-100 shadow-md cursor-pointer rounded-full border-0 px-4 py-2 w-full hover:bg-emerald-300 md:w-1/2">

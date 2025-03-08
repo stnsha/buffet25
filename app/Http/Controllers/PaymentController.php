@@ -9,6 +9,7 @@ use App\Models\OrderDetails;
 use App\Models\PaymentConfirmation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -50,11 +51,20 @@ class PaymentController extends Controller
             'billChargeToCustomer' => '',
         );
 
-        $url = 'https://toyyibpay.com/index.php/api/createBill';
+        if (App::isLocal()) {
+            $domain = 'https://dev.toyyibpay.com/';
+        } else {
+            $domain = 'https://toyyibpay.com/';
+        }
+        $url = $domain . 'index.php/api/createBill';
 
         $response = Http::asForm()->post($url, $option);
-        $billCode = $response[0]['BillCode'];
-        return redirect('https://toyyibpay.com/' . $billCode);
+        if (!empty($response) && isset($response[0]['BillCode'])) {
+            $billCode = $response[0]['BillCode'];
+            return redirect($domain . $billCode);
+        } else {
+            return back()->withErrors(['payment_failed' => 'Bayaran tidak dapat diproses. Sila cuba lagi.'])->withInput();
+        }
     }
 
     public function paymentStatus()
