@@ -35,6 +35,20 @@
                     @endif
                 @endforeach
             </div>
+            <div
+                class="flex flex-col md:flex-row justify-center md:justify-evenly items-center md:items-start px-8 mt-8 text-yellow-50 font-semibold">
+                <div class="flex flex-col rounded-3xl bg-[#EB8B50] p-5 mx-6 mb-3">
+                    <div class="flex flex-row justify-center">
+                        <span class="text-sm content-start pt-2 md:pt-4">RM</span>
+                        <span class="text-[35px] md:text-[55px]">59</span>
+                    </div>
+                    <span class="text-sm md:text-md uppercase tracking-widest font-normal pb-4">Dewasa & Group</span>
+                    <span class="text-yellow-200 text-sm font-light italic">(sah untuk bayaran <span
+                            class="font-bold uppercase">isnin</span> sehingga <span
+                            class="font-bold uppercase">jumaat</span> sahaja)</span>
+                </div>
+            </div>
+
             <div class="flex flex-col w-full border-2 border-orange-300 md:w-3/4 rounded-[35px] mt-6"
                 id="tempah-sekarang">
                 <span class="font-inria font-semibold text-lg text-slate-900 pt-4">Tempah
@@ -76,10 +90,11 @@
                         <span class="font-medium text-md text-start tracking-wider pb-1">Pilihan Tarikh<span
                                 class="text-red-600 pl-0.5">*</span></span>
                         <select name="selected_date" id="selected_date" class="bg-gray-50 rounded-full border-0">
-                            @foreach ($dates as $dt)
-                                <option value="{{ $dt->id }}" data-capacity="{{ $dt->available_capacity }}">
-                                    {{ \Carbon\Carbon::parse($dt->venue_date)->locale('ms_MY')->format('l, d M Y, g:i a') }}
-                                    @if ($dt->available_capacity < 50)
+                            @foreach ($arr as $key => $cp)
+                                <option value="{{ $cp['date_id'] }}" data-capacity="{{ $cp['available_capacity'] }}"
+                                    data-prices='@json($cp['prices'])'>
+                                    {{ $cp['date'] }}
+                                    @if ($cp['available_capacity'] < 50)
                                         <span class="text-red-500">‼️‼️</span>
                                     @endif
                                 </option>
@@ -87,43 +102,49 @@
                         </select>
                     </div>
 
-                    @foreach ($prices as $price)
+                    @foreach ($arr[0]['prices'] as $key => $price)
                         <div
                             class="flex flex-col md:flex-row justify-between items-center mx-auto w-full pb-4 px-4 md:px-48">
                             <div class="flex flex-col w-full md:w-1/5 mr-4">
                                 <span
-                                    class="font-medium text-md text-start tracking-wider pb-1">{{ $price->name }}<span
+                                    class="font-medium text-md text-start tracking-wider pb-1">{{ $price['name'] }}<span
                                         class="text-red-600 pl-0.5">*</span></span>
-                                <span class="font-normal text-xs pt-1.5 text-start">{{ $price->description }}</span>
+                                <span class="font-normal text-xs pt-1.5 text-start">{{ $price['description'] }}</span>
                             </div>
                             <div class="flex flex-col w-full md:w-2/5 mr-0 md:mr-4 mb-3 md:mb-0">
-                                @if ($price->id < 9)
-                                    <select name="{{ $price->id }}_quantity" id="{{ $price->id }}_quantity"
+                                @if ($price['id'] < 9)
+                                    <select name="{{ $price['id'] }}_quantity" id="{{ $price['id'] }}_quantity"
                                         class="bg-gray-50 rounded-full border-0">
+                                        @for ($i = 0; $i < $price['available_capacity']; $i++)
+                                            <option value="{{ $i }}">{{ $i }}</option>
+                                        @endfor
                                     </select>
-                                    @if (in_array($price->id, [2, 5]))
+                                    @if (in_array($price['id'], [2, 5]))
                                         <span
                                             class="font-medium text-xs pt-1.5 text-center uppercase text-red-600">Bukan
                                             baby chair</span>
                                     @endif
                                 @else
-                                    <select name="{{ $price->id }}_quantity" id="{{ $price->id }}_quantity"
+                                    <select name="{{ $price['id'] }}_quantity" id="{{ $price['id'] }}_quantity"
                                         class="bg-gray-50 rounded-full border-0">
                                         @for ($i = 0; $i <= 20; $i++)
-                                            <option value={{ $i * 20 }}>{{ $i }}</option>
+                                            <option value={{ $i }}>{{ $i }}</option>
                                         @endfor
                                     </select>
                                 @endif
                             </div>
                             <div class="flex flex-col w-full md:w-2/5">
-                                <input type="text" name="{{ $price->id . '_price' }}"
-                                    id="{{ $price->id }}_price"
-                                    value="{{ $price->id == 7 ? '63.00' : number_format($price->normal_price, 2) }}"
-                                    data-base-price="{{ $price->id == 7 ? 63.0 : $price->normal_price }}"
+
+                                <input type="text" name="{{ $price['id'] . '_price' }}"
+                                    id="price_{{ $price['id'] }}"
+                                    value="{{ number_format($price['current_price'], 2) }}"
+                                    data-base-price="{{ $price['current_price'] }}"
                                     class="bg-gray-50 rounded-full border-0 text-center" readonly>
+
                             </div>
                         </div>
                     @endforeach
+
                     <span class="font-medium text-red-500 text-xs pt-1.5 text-end">BABY CHAIR LIMITED FIRST
                         COME FIRST SERVE</span>
                     <div class="flex flex-row justify-end items-center mx-auto w-full pb-4 px-4 md:px-48">
@@ -202,169 +223,68 @@
             </div>
         </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Get form and submit button
-            const form = document.querySelector('form');
-            const submitButton = form.querySelector('input[type="submit"]');
-
-            // Get date select and quantity fields
-            const dateSelect = document.getElementById('selected_date');
-
-            // Update the PHP code to include data attributes with available capacity
-            // In your Blade template, modify the options to include:
-            // <option value="{{ $dt->id }}" @disabled($dt->available_capacity == 0) data-capacity="{{ $dt->available_capacity }}" data-venue="{{ $dt->venue_id }}">
-
-            // Function to update total price
-            function updateTotal() {
-                let subtotal = 0;
-
-                // Loop through all price inputs and calculate subtotal
-                document.querySelectorAll('input[id$="_price"]').forEach(priceInput => {
-                    const priceId = priceInput.id.split('_')[0];
-                    const quantitySelect = document.getElementById(priceId + '_quantity');
-
-                    if (quantitySelect) {
-                        const quantity = parseInt(quantitySelect.value) || 0;
-                        const basePrice = parseFloat(priceInput.getAttribute('data-base-price')) || 0;
-
-                        subtotal += quantity * basePrice;
-                    }
-                });
-
-                // Update subtotal field
-                const subtotalField = document.getElementById('subtotal');
-                if (subtotalField) {
-                    subtotalField.value = subtotal.toFixed(2);
-                }
-            }
-
-            // Add event listeners to all quantity selects to update prices
-            document.querySelectorAll('select[id$="_quantity"]').forEach(quantitySelect => {
-                quantitySelect.addEventListener('change', updateTotal);
-            });
-
-            // Initialize total
-            updateTotal();
-
-            // Form submission validation
-            if (form) {
-                form.addEventListener('submit', function(e) {
-                    if (!dateSelect) {
-                        console.error('Date select element not found');
-                        return;
-                    }
-
-                    // Get selected date option
-                    const selectedOption = dateSelect.options[dateSelect.selectedIndex];
-                    if (!selectedOption) {
-                        console.error('No date selected');
-                        return;
-                    }
-
-                    // Extract the available capacity from the selected option's data attribute
-                    // If the data attribute isn't available, fall back to checking if the option is disabled
-                    const availableCapacity = selectedOption.dataset.capacity ?
-                        parseInt(selectedOption.dataset.capacity) :
-                        (selectedOption.disabled ? 0 : 100);
-
-                    // Determine which price options to include in the total based on route
-                    // We'll use the current route to determine the venue
-                    const isArenaRoute = window.location.href.includes('arena');
-
-                    // Calculate total quantity
-                    let totalQuantity = 0;
-
-                    // Based on your original logic: arena uses prices 1-4, chermin uses prices 5-8
-                    if (isArenaRoute) {
-                        ['1_quantity', '2_quantity', '3_quantity', '4_quantity', '9_quantity'].forEach(
-                            id => {
-                                const el = document.getElementById(id);
-                                if (el) {
-                                    totalQuantity += parseInt(el.value || 0);
-                                }
-                            });
-                    } else {
-                        ['5_quantity', '6_quantity', '7_quantity', '8_quantity', '10_quantity'].forEach(
-                            id => {
-                                const el = document.getElementById(id);
-                                if (el) {
-                                    totalQuantity += parseInt(el.value || 0);
-                                }
-                            });
-                    }
-
-
-                    // Check if total quantity is 0
-                    if (totalQuantity === 0) {
-                        e.preventDefault(); // Prevent form submission
-                        showErrorMessage('Sila pilih sekurang-kurangnya satu seat.');
-                        return;
-                    }
-
-                    // Check if total quantity exceeds available capacity
-                    if (totalQuantity > availableCapacity) {
-                        e.preventDefault(); // Prevent form submission
-                        showErrorMessage(
-                            `Maaf, jumlah seat melebihi kapasiti tersedia (${availableCapacity} seat sahaja). Sila kurangkan bilangan seat.`
-                        );
-                    }
-
-                    // Helper function to show error message
-                    function showErrorMessage(message) {
-                        // Create or update error message
-                        let errorMessage = document.getElementById('capacity-error');
-                        if (!errorMessage) {
-                            errorMessage = document.createElement('span');
-                            errorMessage.id = 'capacity-error';
-                            errorMessage.className =
-                                'bg-red-100 text-red-800 text-xs font-medium me-2 mt-2 px-2.5 py-0.5 rounded-md w-fit border-lg';
-                            errorMessage.style.display = 'block';
-                            errorMessage.style.margin = '0 auto';
-                            errorMessage.style.marginBottom = '10px';
-                            errorMessage.style.padding = '8px 16px';
-
-                            // Insert before the submit button's parent div
-                            submitButton.parentElement.before(errorMessage);
-                        }
-
-                        errorMessage.textContent = message;
-                    }
-                });
-            }
-        });
-    </script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const dateSelect = document.getElementById("selected_date");
-            const quantitySelects = document.querySelectorAll("[id$='_quantity']");
+            const dateSelector = document.getElementById("selected_date");
 
-            function updateQuantityOptions() {
-                const selectedOption = dateSelect.options[dateSelect.selectedIndex];
-                const capacity = selectedOption.getAttribute("data-capacity") || 526; // Default 526 if not found
+            function updatePrices() {
+                const selectedOption = dateSelector.options[dateSelector.selectedIndex];
+                const prices = JSON.parse(selectedOption.getAttribute("data-prices"));
 
-                quantitySelects.forEach(select => {
-                    if (select.id === "9_quantity" || select.id === "10_quantity") {
-                        return; // Skip updating 9_quantity and 10_quantity
-                    }
+                prices.forEach(price => {
+                    const priceInput = document.getElementById(`price_${price.id}`);
+                    const quantitySelect = document.getElementById(`${price.id}_quantity`);
 
-                    select.innerHTML = ""; // Clear existing options
+                    if (priceInput && quantitySelect) {
+                        let basePrice = price.current_price;
 
-                    for (let i = 0; i <= capacity; i++) {
-                        let option = document.createElement("option");
-                        option.value = i;
-                        option.textContent = i;
-                        select.appendChild(option);
+                        // If the price ID is 10 (Group category), apply the *20 logic
+                        if (price.id == 10) {
+                            basePrice *= 20;
+                        }
+
+                        priceInput.setAttribute("data-base-price", basePrice);
+                        updateSubtotal(price.id);
                     }
                 });
+
+                updateTotal();
             }
 
-            // Initial load
-            updateQuantityOptions();
+            function updateSubtotal(priceId) {
+                const quantitySelect = document.getElementById(`${priceId}_quantity`);
+                const priceInput = document.getElementById(`price_${priceId}`);
 
-            // Update when date changes
-            dateSelect.addEventListener("change", updateQuantityOptions);
+                if (quantitySelect && priceInput) {
+                    const quantity = parseInt(quantitySelect.value) || 0;
+                    const basePrice = parseFloat(priceInput.getAttribute("data-base-price")) || 0;
+                    const subtotal = quantity * basePrice;
+
+                    priceInput.value = subtotal.toFixed(2);
+                }
+
+                updateTotal();
+            }
+
+            function updateTotal() {
+                let total = 0;
+                document.querySelectorAll("[id^='price_']").forEach(input => {
+                    total += parseFloat(input.value) || 0;
+                });
+                document.getElementById("subtotal").value = total.toFixed(2);
+            }
+
+            dateSelector.addEventListener("change", updatePrices);
+            document.querySelectorAll("[id$='_quantity']").forEach(select => {
+                select.addEventListener("change", function() {
+                    const priceId = this.id.split("_")[0];
+                    updateSubtotal(priceId);
+                });
+            });
+
+            updatePrices();
         });
     </script>
+
+
 </x-form-layout>

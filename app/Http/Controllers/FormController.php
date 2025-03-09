@@ -26,7 +26,28 @@ class FormController extends Controller
     {
         $prices = Price::where('venue_id', 2)->get();
         $dates = Capacity::where('venue_id', 2)->where('status', 1)->get();
-        return view('forms.chermin', compact('prices', 'dates'));
+        $arr = [];
+        foreach ($dates as $date) {
+            $isWeekday = Carbon::parse($date->venue_date)->isWeekday();
+            $display_date = Carbon::parse($date->venue_date)->locale('ms_MY')->format('l, d M Y, g:i a');
+
+            $arr[] = [
+                'date_id' => $date->id,
+                'date' => $display_date,
+                'available_capacity' => $date->available_capacity,
+                'prices' => $prices->map(function ($price) use ($isWeekday, $date) {
+                    $isDiscounted = in_array($price->id, [7, 10]);
+                    return [
+                        'id' => $price->id,
+                        'name' => $price->name,
+                        'current_price' => $isDiscounted ? ($isWeekday ? 59 : 63) : $price->normal_price,
+                        'description' => $price->description,
+                        'available_capacity' => $date->available_capacity,
+                    ];
+                })->toArray(),
+            ];
+        }
+        return view('forms.chermin', compact('arr', 'prices'));
     }
 
     public function store(ReservationRequest $request)
