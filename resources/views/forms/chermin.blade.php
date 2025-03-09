@@ -101,6 +101,11 @@
                                     <select name="{{ $price->id }}_quantity" id="{{ $price->id }}_quantity"
                                         class="bg-gray-50 rounded-full border-0">
                                     </select>
+                                    @if (in_array($price->id, [2, 5]))
+                                        <span
+                                            class="font-medium text-xs pt-1.5 text-center uppercase text-red-600">Bukan
+                                            baby chair</span>
+                                    @endif
                                 @else
                                     <select name="{{ $price->id }}_quantity" id="{{ $price->id }}_quantity"
                                         class="bg-gray-50 rounded-full border-0">
