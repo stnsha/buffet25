@@ -147,6 +147,15 @@ class OrderController extends Controller
             $pc->save();
         }
 
+        // $orders = Order::where('status', 1)
+        //     ->where('created_at', '<', Carbon::now()->subDay()) // Orders older than 1 day
+        //     ->get();
+
+        // foreach ($orders as $order) {
+        //     $order->order_details()->delete(); // Delete related order details
+        //     $order->delete(); // Delete the order
+        // }
+
         Capacity::where('status', '!=', 2)
             ->where('venue_date', '<', Carbon::today())
             ->update(['status' => 2]);

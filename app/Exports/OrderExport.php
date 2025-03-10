@@ -73,7 +73,7 @@ class OrderExport implements FromArray, WithHeadings, WithTitle, WithEvents
 
                 if ($priceRows > 1) {
                     $mergeRanges[] = [
-                        'columns' => ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'], // Columns to merge
+                        'columns' => ['A', 'B', 'C', 'D', 'E', 'F', 'G'], // Columns to merge
                         'start' => $firstRow,
                         'end' => $rowIndex - 1
                     ];
