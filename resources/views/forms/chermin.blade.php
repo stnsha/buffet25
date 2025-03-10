@@ -110,7 +110,15 @@
                                 <span
                                     class="font-medium text-md text-start tracking-wider pb-1">{{ $price['name'] }}<span
                                         class="text-red-600 pl-0.5">*</span></span>
-                                <span class="font-normal text-xs pt-1.5 text-start">{{ $price['description'] }}</span>
+                                <div class="flex flex-row md:flex-col w-full">
+                                    <span
+                                        class="font-normal text-xs pt-1.5 text-start">{{ $price['description'] }}</span>
+                                    @if (in_array($price['id'], [2, 5]))
+                                        <span
+                                            class="font-medium text-xs pt-1.5 pl-0.5 text-start uppercase text-red-600">Bukan
+                                            baby chair</span>
+                                    @endif
+                                </div>
                             </div>
                             <div class="flex flex-col w-full md:w-2/5 mr-0 md:mr-4 mb-3 md:mb-0">
                                 @if ($price['id'] < 9)
@@ -120,11 +128,6 @@
                                             <option value="{{ $i }}">{{ $i }}</option>
                                         @endfor
                                     </select>
-                                    @if (in_array($price['id'], [2, 5]))
-                                        <span
-                                            class="font-medium text-xs pt-1.5 text-center uppercase text-red-600">Bukan
-                                            baby chair</span>
-                                    @endif
                                 @else
                                     <select name="{{ $price['id'] }}_quantity" id="{{ $price['id'] }}_quantity"
                                         class="bg-gray-50 rounded-full border-0">
@@ -146,7 +149,7 @@
                         </div>
                     @endforeach
 
-                    <span class="font-medium text-red-500 text-xs pt-1.5 text-end">BABY CHAIR LIMITED FIRST
+                    <span class="font-medium text-red-600 text-xs pt-1.5 text-end">BABY CHAIR LIMITED FIRST
                         COME FIRST SERVE</span>
                     <div class="flex flex-row justify-end items-center mx-auto w-full pb-4 px-4 md:px-48">
                         <span class="font-medium text-md text-end tracking-wider pb-1 w-3/5">Subtotal</span>
