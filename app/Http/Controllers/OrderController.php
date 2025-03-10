@@ -104,21 +104,41 @@ class OrderController extends Controller
     public function updateStatus()
     {
         $payment_confirmations = PaymentConfirmation::with('order')
-            ->where('status', 1)
+            // ->where('status', 1)
             ->whereHas('order')
             ->get();
 
         foreach ($payment_confirmations as $pc) {
-            if ($pc->order && $pc->order->status != 2) {
-                $pc->order->status = 2;
+            if ($pc->order->fpx_id === null) {
+                switch ($pc->status) {
+                    case 1: //Approved
+                        $status = 2; //Paid
+                        break;
+                    case 2: //Pending
+                        $status = 1; //Reserved
+                        break;
+                    case 3: //Failed
+                        $status = 4; //Failed
+                        break;
+                    default:
+                        $status = 1;
+                        break;
+                }
+                $pc->order->status = $status;
                 $pc->order->fpx_id = $pc->bill_code;
                 $pc->order->save();
             }
 
-            if ($pc->order && $pc->order->status == 2 && $pc->order->fpx_id === null) {
-                $pc->order->fpx_id = $pc->bill_code;
-                $pc->order->save();
-            }
+            // if ($pc->order && $pc->order->status != 2) {
+            //     $pc->order->status = 2;
+            //     $pc->order->fpx_id = $pc->bill_code;
+            //     $pc->order->save();
+            // }
+
+            // if ($pc->order && $pc->order->status == 2 && $pc->order->fpx_id === null) {
+            //     $pc->order->fpx_id = $pc->bill_code;
+            //     $pc->order->save();
+            // }
             $pc->save();
         }
 
