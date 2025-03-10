@@ -37,13 +37,14 @@
             </div>
             <div
                 class="flex flex-col md:flex-row justify-center md:justify-evenly items-center md:items-start px-8 mt-8 text-yellow-50 font-semibold">
-                <div class="flex flex-col rounded-3xl bg-[#EB8B50] p-5 mx-6 mb-3">
+                <div class="flex flex-col rounded-3xl bg-yellow-200 p-5 mx-6 mb-3">
                     <div class="flex flex-row justify-center">
-                        <span class="text-sm content-start pt-2 md:pt-4">RM</span>
-                        <span class="text-[35px] md:text-[55px]">59</span>
+                        <span class="text-sm  text-orange-600 content-start pt-2 md:pt-4">RM</span>
+                        <span class="text-[35px] md:text-[55px] text-orange-600">59</span>
                     </div>
-                    <span class="text-sm md:text-md uppercase tracking-widest font-normal pb-4">Dewasa & Group</span>
-                    <span class="text-yellow-200 text-sm font-light italic">(sah untuk bayaran <span
+                    <span class="text-sm md:text-md text-orange-600 uppercase tracking-widest font-normal pb-4">Dewasa &
+                        Group</span>
+                    <span class="text-orange-600 text-sm font-light italic">(sah untuk bayaran <span
                             class="font-bold uppercase">isnin</span> sehingga <span
                             class="font-bold uppercase">jumaat</span> sahaja)</span>
                 </div>
