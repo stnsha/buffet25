@@ -95,7 +95,7 @@
                                     data-prices='@json($cp['prices'])'>
                                     {{ $cp['date'] }}
                                     @if ($cp['available_capacity'] < 50)
-                                        <span class="text-red-500">‼️‼️</span>
+                                        <span class="text-red-500">- {{ $cp['available_capacity'] }} pax ‼️</span>
                                     @endif
                                 </option>
                             @endforeach

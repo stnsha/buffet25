@@ -103,7 +103,7 @@ class OrderController extends Controller
 
     public function updateStatus()
     {
-        $payment_confirmations = PaymentConfirmation::with(['order'])
+        $payment_confirmations = PaymentConfirmation::with('order')
             ->where('status', 1)
             ->whereHas('order')
             ->get();
@@ -114,6 +114,12 @@ class OrderController extends Controller
                 $pc->order->fpx_id = $pc->bill_code;
                 $pc->order->save();
             }
+
+            if ($pc->order && $pc->order->status == 2 && $pc->order->fpx_id === null) {
+                $pc->order->fpx_id = $pc->bill_code;
+                $pc->order->save();
+            }
+            $pc->save();
         }
 
         Capacity::where('status', '!=', 2)

@@ -79,7 +79,7 @@
                                 <option value="{{ $dt->id }}" data-capacity="{{ $dt->available_capacity }}">
                                     {{ \Carbon\Carbon::parse($dt->venue_date)->locale('ms_MY')->format('l, d M Y, g:i a') }}
                                     @if ($dt->available_capacity < 50)
-                                        <span class="text-red-500">‼️‼️</span>
+                                        <span class="text-red-500">- {{ $dt->available_capacity }} pax ‼️</span>
                                     @endif
                                 </option>
                             @endforeach
