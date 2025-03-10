@@ -125,7 +125,12 @@ class OrderController extends Controller
                         break;
                 }
                 $pc->order->status = $status;
-                $pc->order->fpx_id = $pc->bill_code;
+                if ($status == 1) {
+                    $pc->order->fpx_id = $pc->bill_code;
+                } else {
+                    $pc->order->fpx_id = null;
+                }
+
                 $pc->order->save();
             }
 
