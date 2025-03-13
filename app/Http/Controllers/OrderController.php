@@ -21,7 +21,7 @@ class OrderController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $this->updateStatus();
+        // $this->updateStatus();
 
         return view('orders.index', compact('orders'));
     }
@@ -107,8 +107,6 @@ class OrderController extends Controller
         $payment_confirmations = PaymentConfirmation::with('order')
             ->where('status', 1)
             ->get();
-
-
 
         foreach ($payment_confirmations as $pc) {
 
