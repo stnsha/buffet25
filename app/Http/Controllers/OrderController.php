@@ -103,12 +103,15 @@ class OrderController extends Controller
 
     public function updateStatus()
     {
+
         $payment_confirmations = PaymentConfirmation::with('order')
-            // ->where('status', 1)
-            ->whereHas('order')
+            ->where('status', 1)
             ->get();
 
+
+
         foreach ($payment_confirmations as $pc) {
+
             if ($pc->order->fpx_id === null) {
                 switch ($pc->status) {
                     case 1: //Approved
@@ -121,89 +124,32 @@ class OrderController extends Controller
                         $status = 4; //Failed
                         break;
                     default:
-                        $status = 1;
+                        $status = 4;
                         break;
                 }
-                $pc->order->status = $status;
-                if ($status == 1) {
+
+                if ($pc->status == 1) {
                     $pc->order->fpx_id = $pc->bill_code;
                 } else {
                     $pc->order->fpx_id = null;
                 }
-
+                $pc->order->status = $status;
                 $pc->order->save();
             }
-
-            // if ($pc->order && $pc->order->status != 2) {
-            //     $pc->order->status = 2;
-            //     $pc->order->fpx_id = $pc->bill_code;
-            //     $pc->order->save();
-            // }
-
-            // if ($pc->order && $pc->order->status == 2 && $pc->order->fpx_id === null) {
-            //     $pc->order->fpx_id = $pc->bill_code;
-            //     $pc->order->save();
-            // }
             $pc->save();
         }
 
-        // $orders = Order::where('status', 1)
-        //     ->where('created_at', '<', Carbon::now()->subDay()) // Orders older than 1 day
-        //     ->get();
+        $orders = Order::whereIn('status', [1, 4])
+            ->where('created_at', '<', Carbon::now()->subDay()) // Orders older than 1 day
+            ->get();
 
-        // foreach ($orders as $order) {
-        //     $order->order_details()->delete(); // Delete related order details
-        //     $order->delete(); // Delete the order
-        // }
+        foreach ($orders as $order) {
+            $order->order_details()->delete(); // Delete related order details
+            $order->delete(); // Delete the order
+        }
 
         Capacity::where('status', '!=', 2)
             ->where('venue_date', '<', Carbon::today())
             ->update(['status' => 2]);
     }
 }
-/**
- * $request->input('status'),
- */
-
-/**
- * status_id -> 1= success, 2=pending, 3=fail (from API)
- * billcode -> fpx_id
- */
-        // $pc = PaymentConfirmation::find($payment_confirmation_id);
-
-        // if ($pc) {
-        //     $status = $request->input('status');
-        //     $order = Order::find($pc->order_id);
-        //     switch ($status) {
-        //         case '1':
-        //             $order->status = 2;
-        //             break;
-        //         case '3':
-        //             $order->status = 4;
-        //             break;
-        //         default:
-        //             $order->status = 1;
-        //             break;
-        //     }
-        //     $order->save();
-
-        //     if ($status == 1) {
-        //         $order_details = OrderDetails::where('order_id', $order->id)->get();
-        //         $total_quantity = $order_details->sum('quantity');
-
-        //         $capacity = Capacity::find($order->venue_id);
-        //         $new_tpaid = $capacity->total_paid + $total_quantity;
-        //         $new_tcap = $capacity->available_capacity - $total_quantity;
-        //         $capacity->total_paid = $new_tpaid;
-        //         $capacity->available_capacity = $new_tcap;
-        //         /**
-        //          * status = 1 ; available
-        //          * 2 = warning
-        //          * 3 = sold out
-        //          */
-
-        //         $new_tcap < 20 ?? $capacity->status = 2;
-        //         $new_tcap == 0 ?? $capacity->status = 3;
-        //         $capacity->save();
-        //     }
-        // }
