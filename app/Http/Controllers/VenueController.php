@@ -54,8 +54,6 @@ class VenueController extends Controller
             $capacity->available_capacity = $available_capacity;
             if ($available_capacity < 10) {
                 $capacity->status = 2;
-            } else {
-                $capacity->status = 1;
             }
             $capacity->save();
         }
