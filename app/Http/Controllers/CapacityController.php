@@ -155,12 +155,32 @@ class CapacityController extends Controller
     {
         $capacity = Capacity::find($capacity_id);
         if ($capacity) {
-            $capacity->full_capacity = $request['full_capacity'];
+            if ($request['available_capacity'] != $capacity->available_capacity) {
+                $available_capacity = $request['available_capacity'];
+                $full_capacity = $available_capacity + $capacity->total_paid;
+            } else {
+                $available_capacity = $capacity->available_capacity;
+                $full_capacity = $capacity->full_capacity;
+            }
+
+            if ($request['full_capacity'] != $capacity->full_capacity) {
+                $full_capacity = $request['full_capacity'];
+                $available_capacity = $full_capacity - $capacity->total_paid;
+            }
+
+            if ($available_capacity >= 10) {
+                $status = 1;
+            } else {
+                $status = 2;
+            }
+
+            $capacity->available_capacity = $available_capacity;
+            $capacity->full_capacity = $full_capacity;
             $capacity->min_capacity = $request['min_capacity'];
-            $capacity->available_capacity = $request['available_capacity'];
+            $capacity->available_capacity = $available_capacity;
             $capacity->total_paid = $request['total_paid'];
             $capacity->total_reserved = $request['total_reserved'];
-            $capacity->status = $request['status'];
+            $capacity->status = $status;
             $capacity->save();
 
             return redirect()->route('venue.index', $capacity->venue_id)->with('success', 'Update successful!');

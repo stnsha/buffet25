@@ -44,16 +44,15 @@ class VenueController extends Controller
 
         foreach ($total_by_capacity as $capacity_id => $tc) {
             $capacity = Capacity::find($capacity_id);
-            $available_capacity = $capacity->available_capacity;
+            $full_capacity = $capacity->full_capacity;
             $total_paid = $capacity->total_paid;
 
             $total_paid = $tc['total_quantity'];
-            $updated_full_capacity = $available_capacity + $total_paid;
 
-            $capacity->full_capacity = $updated_full_capacity;
             $capacity->total_paid = $total_paid;
-
-            if ($total_paid == $updated_full_capacity) {
+            $available_capacity = $full_capacity - $total_paid;
+            $capacity->available_capacity = $available_capacity;
+            if ($available_capacity < 10) {
                 $capacity->status = 2;
             }
             $capacity->save();

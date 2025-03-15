@@ -37,7 +37,7 @@
                     <div class="flex flex-col w-1/3 mr-1">
                         <span class="font-medium text-sm pb-2 capitalize mr-4">Total paid</span>
                         <input class="w-full border-1 border-zinc-300 shadow-md bg-white py-2 rounded-md" type="text"
-                            name="total_paid" id="total_paid" value="{{ $capacity->total_paid }}">
+                            name="total_paid" id="total_paid" value="{{ $capacity->total_paid }}" readonly>
                     </div>
                     <div class="flex flex-col w-1/3 mr-1">
                         <span class="font-medium text-sm pb-2 capitalize mr-4">Total Reserved</span>
