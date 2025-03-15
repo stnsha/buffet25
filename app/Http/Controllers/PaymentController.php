@@ -49,7 +49,10 @@ class PaymentController extends Controller
             'chargeFPXB2B' => 1,
             // 'billContentEmail' => 'Terima kasih! Selamat berpuasa :D',
             'billChargeToCustomer' => '',
+            'billExpiryDate' => now()->addMinutes(5)->format('d-m-Y H:i:s'),
         );
+
+        // dd($option);
 
         if (App::isLocal()) {
             $domain = 'https://dev.toyyibpay.com/';
@@ -85,6 +88,9 @@ class PaymentController extends Controller
         switch ($status_id) {
             case '1':
                 $order->status = 2;
+                break;
+            case '2':
+                $order->status = 1;
                 break;
             case '3':
                 $order->status = 4;
@@ -138,9 +144,12 @@ class PaymentController extends Controller
             if ($payment_confirmation) {
                 $order = Order::find($payment_confirmation->order_id);
                 $order->fpx_id = $payment_confirmation->bill_code;
-                switch ($status) {
+                switch ($payment_confirmation->status) {
                     case '1':
                         $order->status = 2;
+                        break;
+                    case '2':
+                        $order->status = 1;
                         break;
                     case '3':
                         $order->status = 4;
@@ -151,7 +160,7 @@ class PaymentController extends Controller
                 }
                 $order->save();
 
-                if ($status == 1) {
+                if ($payment_confirmation->status == 1) {
 
                     $order_details = OrderDetails::where('order_id', $order->id)->get();
                     $total_quantity = $order_details->sum('quantity');
@@ -163,12 +172,10 @@ class PaymentController extends Controller
                     $capacity->available_capacity = $new_tcap;
                     /**
                      * status = 1 ; available
-                     * 2 = warning
-                     * 3 = sold out
+                     * 2 = sold out
                      */
 
-                    $new_tcap < 20 ?? $capacity->status = 2;
-                    $new_tcap == 0 ?? $capacity->status = 3;
+                    $new_tcap < 1 ?? $capacity->status = 2;
                     $capacity->save();
                 }
             }

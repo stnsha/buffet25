@@ -21,7 +21,7 @@ class OrderController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        // $this->updateStatus();
+        $this->updateStatus();
 
         return view('orders.index', compact('orders'));
     }
@@ -109,8 +109,7 @@ class OrderController extends Controller
             ->get();
 
         foreach ($payment_confirmations as $pc) {
-
-            if ($pc->order->fpx_id === null) {
+            if ($pc->order) {
                 switch ($pc->status) {
                     case 1: //Approved
                         $status = 2; //Paid
@@ -126,15 +125,18 @@ class OrderController extends Controller
                         break;
                 }
 
-                if ($pc->status == 1) {
+                if ($pc->order->status != $status) {
+                    $pc->order->status = $status;
                     $pc->order->fpx_id = $pc->bill_code;
-                } else {
-                    $pc->order->fpx_id = null;
                 }
-                $pc->order->status = $status;
+
+                if ($pc->order->fpx_id === null && $status == 2) {
+                    $pc->order->fpx_id = $pc->bill_code;
+                    $pc->order->status = $status;
+                }
                 $pc->order->save();
+                $pc->save();
             }
-            $pc->save();
         }
 
         $orders = Order::whereIn('status', [1, 4])

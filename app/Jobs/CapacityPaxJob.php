@@ -68,8 +68,7 @@ class CapacityPaxJob implements ShouldQueue
             ->get();
 
         foreach ($payment_confirmations as $pc) {
-
-            if ($pc->order->fpx_id === null) {
+            if ($pc->order) {
                 switch ($pc->status) {
                     case 1: //Approved
                         $status = 2; //Paid
@@ -85,15 +84,18 @@ class CapacityPaxJob implements ShouldQueue
                         break;
                 }
 
-                if ($pc->status == 1) {
+                if ($pc->order->status != $status) {
+                    $pc->order->status = $status;
                     $pc->order->fpx_id = $pc->bill_code;
-                } else {
-                    $pc->order->fpx_id = null;
                 }
-                $pc->order->status = $status;
+
+                if ($pc->order->fpx_id === null && $status == 2) {
+                    $pc->order->fpx_id = $pc->bill_code;
+                    $pc->order->status = $status;
+                }
                 $pc->order->save();
+                $pc->save();
             }
-            $pc->save();
         }
         Log::info('Done updating payment confirmation..');
         Log::info('Update delete older failed orders starting...');

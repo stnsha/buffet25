@@ -9,4 +9,4 @@ use Illuminate\Support\Facades\Schedule;
 //     $this->comment(Inspiring::quote());
 // })->purpose('Display an inspiring quote')->hourly();
 
-Schedule::job(new CapacityPaxJob)->timezone('Asia/Kuala_Lumpur')->everyThirtyMinutes();
+// Schedule::job(new CapacityPaxJob)->timezone('Asia/Kuala_Lumpur')->everyThirtyMinutes();
