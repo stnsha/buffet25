@@ -48,16 +48,16 @@ class CapacityPaxJob implements ShouldQueue
 
         foreach ($total_by_capacity as $capacity_id => $tc) {
             $capacity = Capacity::find($capacity_id);
-            $full_capacity = $capacity->full_capacity;
+            $available_capacity = $capacity->available_capacity;
             $total_paid = $capacity->total_paid;
 
             $total_paid = $tc['total_quantity'];
-            $updated_capacity = $full_capacity - $total_paid;
+            $updated_full_capacity = $available_capacity + $total_paid;
 
-            $capacity->available_capacity = $updated_capacity;
+            $capacity->full_capacity = $updated_full_capacity;
             $capacity->total_paid = $total_paid;
 
-            if ($updated_capacity == 0) {
+            if ($total_paid == $updated_full_capacity) {
                 $capacity->status = 2;
             }
             $capacity->save();

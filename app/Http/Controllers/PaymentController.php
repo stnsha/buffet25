@@ -137,6 +137,7 @@ class PaymentController extends Controller
 
             if ($payment_confirmation) {
                 $order = Order::find($payment_confirmation->order_id);
+                $order->fpx_id = $payment_confirmation->bill_code;
                 switch ($status) {
                     case '1':
                         $order->status = 2;
