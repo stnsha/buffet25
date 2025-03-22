@@ -11,14 +11,14 @@
                 @foreach ($prices as $pr)
                     @if ($pr->id != 5)
                         <div
-                            class="flex flex-col rounded-3xl bg-[#EB8B50] {{ $pr->id == 7 ? 'p-6' : 'p-5' }} {{ $pr->id == 5 ? 'hidden' : 'block' }} mx-6 mb-3">
+                            class="flex flex-col rounded-3xl bg-[#EB8B50] {{ $pr->id == 7 || $pr->id == 10 ? 'p-6' : 'p-5' }} {{ $pr->id == 5 ? 'hidden' : 'block' }} mx-6 mb-3">
                             <div class="flex flex-row justify-center">
                                 <span
-                                    class="text-sm content-start pt-2 md:pt-4 {{ $pr->id == 7 ? 'text-[#133944]' : '' }}">RM</span>
+                                    class="text-sm content-start pt-2 md:pt-4 {{ $pr->id == 7 || $pr->id == 10 ? 'text-[#133944]' : '' }}">RM</span>
                                 <span
-                                    class="text-[35px] md:text-[55px] {{ $pr->id == 7 ? 'line-through text-[#133944]' : '' }}">{{ $pr->normal_price }}</span>
+                                    class="text-[35px] md:text-[55px] {{ $pr->id == 7 || $pr->id == 10 ? 'line-through text-[#133944]' : '' }}">{{ $pr->normal_price }}</span>
                             </div>
-                            @if ($pr->id == 7)
+                            @if ($pr->id == 7 || $pr->id == 10)
                                 <div class="flex flex-row justify-center">
                                     <span class="text-sm content-start pt-2 md:pt-4">RM</span>
                                     <span class="text-[35px] md:text-[55px]">59</span>
