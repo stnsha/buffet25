@@ -130,10 +130,14 @@
 
                     <span class="font-medium text-red-600 text-xs pt-1.5 text-end">BABY CHAIR LIMITED FIRST
                         COME FIRST SERVE</span>
-                    <div class="flex flex-row justify-end items-center mx-auto w-full pb-4 px-4 md:px-48">
+                    <div class="flex flex-row justify-end items-center mx-auto w-full px-4 md:px-48">
                         <span class="font-medium text-md text-end tracking-wider pb-1 w-3/5">Subtotal</span>
                         <input type="text" name="subtotal" id="subtotal" value="0.00"
                             class="bg-gray-50 rounded-full border-0 w-2/5 ml-8 text-center" readonly>
+                    </div>
+                    <div class="flex flex-col justify-center items-center w-full pl-0 md:pl-[200px]">
+                        <span class="font-medium text-slate-900 text-xs pt-1.5 pl-64 md:pl-60 text-end">(Caj tambahan RM
+                            1)</span>
                     </div>
                     @if ($errors->has('subtotal'))
                         <span

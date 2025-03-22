@@ -48,7 +48,7 @@ class PaymentController extends Controller
             'enableFPXB2B' => 1,
             'chargeFPXB2B' => 1,
             // 'billContentEmail' => 'Terima kasih! Selamat berpuasa :D',
-            'billChargeToCustomer' => '',
+            'billChargeToCustomer' => '0',
             'billExpiryDate' => now()->addMinutes(5)->format('d-m-Y H:i:s'),
         );
 
@@ -132,14 +132,16 @@ class PaymentController extends Controller
             $order_id = $order->id;
 
             // Create a payment confirmation record
-            $payment_confirmation = PaymentConfirmation::create([
-                'order_id' => $order_id,
-                'ref_no' => $refno,
-                'status' => $status,
-                'reason' => $reason,
-                'bill_code' => $billcode,
-                'amount' => $amount,
-            ]);
+            $payment_confirmation = PaymentConfirmation::updateOrCreate(
+                ['order_id' => $order_id],
+                [
+                    'ref_no' => $refno,
+                    'status' => $status,
+                    'reason' => $reason,
+                    'bill_code' => $billcode,
+                    'amount' => $amount,
+                ]
+            );
 
             if ($payment_confirmation) {
                 $order = Order::find($payment_confirmation->order_id);
