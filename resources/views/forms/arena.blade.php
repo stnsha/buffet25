@@ -78,9 +78,6 @@
                             @foreach ($dates as $dt)
                                 <option value="{{ $dt->id }}" data-capacity="{{ $dt->available_capacity }}">
                                     {{ \Carbon\Carbon::parse($dt->venue_date)->locale('ms_MY')->format('l, d M Y, g:i a') }}
-                                    @if ($dt->available_capacity < 50)
-                                        <span class="text-red-500">- {{ $dt->available_capacity }} pax ‼️</span>
-                                    @endif
                                 </option>
                             @endforeach
                         </select>
@@ -136,7 +133,8 @@
                             class="bg-gray-50 rounded-full border-0 w-2/5 ml-8 text-center" readonly>
                     </div>
                     <div class="flex flex-col justify-center items-center w-full pl-0 md:pl-[200px]">
-                        <span class="font-medium text-slate-900 text-xs pt-1.5 pl-64 md:pl-60 text-end">(Caj tambahan RM
+                        <span class="font-medium text-slate-900 text-xs pt-1.5 pl-44 sm:pl-64 md:pl-60 text-end">(Caj
+                            tambahan RM
                             1)</span>
                     </div>
                     @if ($errors->has('subtotal'))

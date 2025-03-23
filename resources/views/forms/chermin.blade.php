@@ -95,9 +95,6 @@
                                 <option value="{{ $cp['date_id'] }}" data-capacity="{{ $cp['available_capacity'] }}"
                                     data-prices='@json($cp['prices'])'>
                                     {{ $cp['date'] }}
-                                    @if ($cp['available_capacity'] < 50)
-                                        <span class="text-red-500">- {{ $cp['available_capacity'] }} pax ‼️</span>
-                                    @endif
                                 </option>
                             @endforeach
                         </select>
@@ -159,7 +156,8 @@
                             class="bg-gray-50 rounded-full border-0 w-2/5 ml-8 text-center" readonly>
                     </div>
                     <div class="flex flex-col justify-center items-center w-full pl-0 md:pl-[200px]">
-                        <span class="font-medium text-slate-900 text-xs pt-1.5 pl-64 md:pl-60 text-end">(Caj tambahan RM
+                        <span class="font-medium text-slate-900 text-xs pt-1.5 pl-44 sm:pl-64 md:pl-60 text-end">(Caj
+                            tambahan RM
                             1)</span>
                     </div>
                     @if ($errors->has('subtotal'))
@@ -237,7 +235,7 @@
         document.addEventListener("DOMContentLoaded", function() {
             const dateSelector = document.getElementById("selected_date");
 
-            function updatePrices() {
+            function updatePricesAndQuantities() {
                 const selectedOption = dateSelector.options[dateSelector.selectedIndex];
                 const prices = JSON.parse(selectedOption.getAttribute("data-prices"));
 
@@ -248,12 +246,21 @@
                     if (priceInput && quantitySelect) {
                         let basePrice = price.current_price;
 
-                        // If the price ID is 10 (Group category), apply the *20 logic
                         if (price.id == 10) {
                             basePrice *= 20;
                         }
 
                         priceInput.setAttribute("data-base-price", basePrice);
+
+                        // Update quantity dropdown
+                        quantitySelect.innerHTML = "";
+                        for (let i = 0; i <= price.available_capacity; i++) {
+                            let option = document.createElement("option");
+                            option.value = i;
+                            option.textContent = i;
+                            quantitySelect.appendChild(option);
+                        }
+
                         updateSubtotal(price.id);
                     }
                 });
@@ -284,7 +291,7 @@
                 document.getElementById("subtotal").value = total.toFixed(2);
             }
 
-            dateSelector.addEventListener("change", updatePrices);
+            dateSelector.addEventListener("change", updatePricesAndQuantities);
             document.querySelectorAll("[id$='_quantity']").forEach(select => {
                 select.addEventListener("change", function() {
                     const priceId = this.id.split("_")[0];
@@ -292,9 +299,8 @@
                 });
             });
 
-            updatePrices();
+            updatePricesAndQuantities();
         });
     </script>
-
 
 </x-form-layout>

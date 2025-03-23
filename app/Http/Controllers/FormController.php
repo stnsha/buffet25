@@ -47,6 +47,7 @@ class FormController extends Controller
                 })->toArray(),
             ];
         }
+
         return view('forms.chermin', compact('arr', 'prices'));
     }
 
