@@ -59,8 +59,7 @@ class VenueController extends Controller
         foreach ($total_by_capacity as $capacity_id => $tc) {
             Log::debug("Processing capacity_id: $capacity_id", ['total_quantity' => $tc['total_quantity']]);
 
-            $capacity = Capacity::where('id', $capacity_id)->whereDate('venue_date', '>', Carbon::today('Asia/Kuala_Lumpur')->startOfDay())->first();
-
+            $capacity = Capacity::where('id', $capacity_id)->whereDate('venue_date', '>=', Carbon::today('Asia/Kuala_Lumpur')->startOfDay())->first();
             if (!$capacity) {
                 // Log::error("Capacity not found for ID: $capacity_id");
                 continue;

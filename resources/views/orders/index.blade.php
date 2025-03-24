@@ -127,8 +127,17 @@
             }
 
             function createPaginationControls() {
+                // Create scrollable wrapper
+                const paginationWrapper = document.createElement("div");
+                paginationWrapper.className = "w-full overflow-x-auto mt-4";
+
+                // Create pagination container
                 const paginationContainer = document.createElement("div");
-                paginationContainer.className = "pagination flex gap-2 mt-4";
+                paginationContainer.className = "pagination flex gap-2 whitespace-nowrap px-2";
+                paginationWrapper.appendChild(paginationContainer);
+
+                // Append pagination container to table parent
+                table.parentElement.appendChild(paginationWrapper);
 
                 for (let i = 1; i <= totalPages; i++) {
                     const button = document.createElement("button");
@@ -141,7 +150,6 @@
                     });
                     paginationContainer.appendChild(button);
                 }
-                table.parentElement.appendChild(paginationContainer);
             }
 
             function updateActiveButton() {
