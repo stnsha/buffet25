@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Capacity;
 use App\Models\Order;
-use App\Models\OrderDetails;
 use App\Models\PaymentConfirmation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -24,30 +24,6 @@ class OrderController extends Controller
         $this->updateStatus();
 
         return view('orders.index', compact('orders'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Order $order)
-    {
-        //
     }
 
     /**
@@ -93,63 +69,74 @@ class OrderController extends Controller
         return redirect()->route('order.index')->with('success', $message);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Order $order)
-    {
-        //
-    }
-
     public function updateStatus()
     {
+        Log::info('Starting updateStatus method');
 
         $payment_confirmations = PaymentConfirmation::with('order')
             ->where('status', 1)
             ->get();
 
+        Log::info('Fetched payment confirmations', ['count' => $payment_confirmations->count()]);
+
         foreach ($payment_confirmations as $pc) {
             if ($pc->order) {
+                Log::info('Processing payment confirmation', ['id' => $pc->id, 'order_id' => $pc->order->id, 'current_status' => $pc->status]);
+
                 switch ($pc->status) {
-                    case 1: //Approved
-                        $status = 2; //Paid
+                    case 1: // Approved
+                        $status = 2; // Paid
                         break;
-                    case 2: //Pending
-                        $status = 1; //Reserved
+                    case 2: // Pending
+                        $status = 1; // Reserved
                         break;
-                    case 3: //Failed
-                        $status = 4; //Failed
+                    case 3: // Failed
+                        $status = 4; // Failed
                         break;
                     default:
                         $status = 4;
                         break;
                 }
 
+                Log::info('Determined new status', ['new_status' => $status]);
+
                 if ($pc->order->status != $status) {
+                    Log::info('Updating order status', ['order_id' => $pc->order->id, 'old_status' => $pc->order->status, 'new_status' => $status, 'bill_code' => $pc->bill_code]);
                     $pc->order->status = $status;
                     $pc->order->fpx_id = $pc->bill_code;
                 }
 
                 if ($pc->order->fpx_id === null && $status == 2) {
+                    Log::info('Setting FPX ID for paid order', ['order_id' => $pc->order->id, 'bill_code' => $pc->bill_code, 'bill_code' => $pc->bill_code]);
                     $pc->order->fpx_id = $pc->bill_code;
                     $pc->order->status = $status;
                 }
+
                 $pc->order->save();
                 $pc->save();
             }
         }
 
+        Log::info('Checking for old unpaid or failed orders to delete');
+
         $orders = Order::whereIn('status', [1, 4])
             ->where('created_at', '<', Carbon::now()->subDay()) // Orders older than 1 day
             ->get();
 
+        Log::info('Found orders to delete', ['count' => $orders->count()]);
+
         foreach ($orders as $order) {
+            Log::info('Deleting order', ['order_id' => $order->id]);
             $order->order_details()->delete(); // Delete related order details
             $order->delete(); // Delete the order
         }
 
-        Capacity::where('status', '!=', 2)
+        Log::info('Updating capacities with past venue dates');
+
+        $updated = Capacity::where('status', '!=', 2)
             ->where('venue_date', '<', Carbon::today())
             ->update(['status' => 2]);
+
+        Log::info('Updated capacity status', ['count' => $updated]);
     }
 }

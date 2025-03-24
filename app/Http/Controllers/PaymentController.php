@@ -49,7 +49,7 @@ class PaymentController extends Controller
             'chargeFPXB2B' => 1,
             // 'billContentEmail' => 'Terima kasih! Selamat berpuasa :D',
             'billChargeToCustomer' => '0',
-            'billExpiryDate' => now()->addMinutes(5)->format('d-m-Y H:i:s'),
+            'billExpiryDate' => now()->setTimezone('Asia/Kuala_Lumpur')->addMinutes(15)->format('d-m-Y H:i:s'),
         );
 
         // dd($option);
@@ -61,11 +61,18 @@ class PaymentController extends Controller
         }
         $url = $domain . 'index.php/api/createBill';
 
-        $response = Http::asForm()->post($url, $option);
-        if (!empty($response) && isset($response[0]['BillCode'])) {
-            $billCode = $response[0]['BillCode'];
-            return redirect($domain . $billCode);
-        } else {
+        try {
+            $response = Http::asForm()->timeout(60)->post($url, $option);
+
+            Log::info('ToyyibPay Response', ['response' => $response->json()]);
+
+            if ($response->successful() && isset($response[0]['BillCode'])) {
+                return redirect($domain . $response[0]['BillCode']);
+            } else {
+                return back()->withErrors(['payment_failed' => 'Bayaran tidak dapat diproses. Sila cuba lagi.'])->withInput();
+            }
+        } catch (\Illuminate\Http\Client\RequestException $e) {
+            Log::error('ToyyibPay API Request Failed', ['message' => $e->getMessage()]);
             return back()->withErrors(['payment_failed' => 'Bayaran tidak dapat diproses. Sila cuba lagi.'])->withInput();
         }
     }
@@ -83,7 +90,9 @@ class PaymentController extends Controller
          */
 
         $order = Order::where('ref_id', $ref_id)->first();
-        $order->fpx_id = $billcode;
+        if ($billcode != null) {
+            $order->fpx_id = $billcode;
+        }
 
         switch ($status_id) {
             case '1':
