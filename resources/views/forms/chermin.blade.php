@@ -231,7 +231,7 @@
             </div>
         </div>
     </div>
-    <script>
+    {{-- <script>
         document.addEventListener("DOMContentLoaded", function() {
             const dateSelector = document.getElementById("selected_date");
 
@@ -301,6 +301,91 @@
 
             updatePricesAndQuantities();
         });
-    </script>
+    </script> --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const dateSelector = document.getElementById("selected_date");
 
+            function updatePricesAndQuantities() {
+                const selectedOption = dateSelector.options[dateSelector.selectedIndex];
+                const pricesData = selectedOption.getAttribute("data-prices");
+
+                if (!pricesData) {
+                    console.warn("No data-prices found. Skipping update.");
+                    return;
+                }
+
+                let prices;
+                try {
+                    prices = JSON.parse(pricesData);
+                } catch (error) {
+                    console.error("Error parsing data-prices JSON:", error);
+                    return;
+                }
+
+                prices.forEach(price => {
+                    const priceInput = document.getElementById(`price_${price.id}`);
+                    const quantitySelect = document.getElementById(`${price.id}_quantity`);
+
+                    if (!quantitySelect) {
+                        console.warn(`Dropdown not found for price ID: ${price.id}`);
+                        return;
+                    }
+
+                    let basePrice = price.current_price;
+                    if (price.id == 10) basePrice *= 20;
+                    priceInput.setAttribute("data-base-price", basePrice);
+
+                    // Prevent re-rendering the same dropdown if it’s already correct
+                    if (quantitySelect.childElementCount !== price.available_capacity + 1) {
+                        quantitySelect.innerHTML = "";
+                        for (let i = 0; i <= price.available_capacity; i++) {
+                            let option = document.createElement("option");
+                            option.value = i;
+                            option.textContent = i;
+                            quantitySelect.appendChild(option);
+                        }
+                    }
+
+                    updateSubtotal(price.id);
+                });
+
+                updateTotal();
+            }
+
+            function updateSubtotal(priceId) {
+                const quantitySelect = document.getElementById(`${priceId}_quantity`);
+                const priceInput = document.getElementById(`price_${priceId}`);
+
+                if (!quantitySelect || !priceInput) return;
+
+                const quantity = parseInt(quantitySelect.value) || 0;
+                const basePrice = parseFloat(priceInput.getAttribute("data-base-price")) || 0;
+                const subtotal = quantity * basePrice;
+
+                priceInput.value = subtotal.toFixed(2);
+                updateTotal();
+            }
+
+            function updateTotal() {
+                let total = 0;
+                document.querySelectorAll("[id^='price_']").forEach(input => {
+                    total += parseFloat(input.value) || 0;
+                });
+                document.getElementById("subtotal").value = total.toFixed(2);
+            }
+
+            dateSelector.addEventListener("change", updatePricesAndQuantities);
+
+            document.addEventListener("change", function(event) {
+                if (event.target.matches("[id$='_quantity']")) {
+                    const priceId = event.target.id.split("_")[0];
+                    updateSubtotal(priceId);
+                }
+            });
+
+            // Delay initial execution to ensure DOM is fully loaded
+            setTimeout(updatePricesAndQuantities, 200);
+        });
+    </script>
 </x-form-layout>
