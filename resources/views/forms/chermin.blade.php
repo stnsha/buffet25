@@ -336,10 +336,12 @@
                     if (price.id == 10) basePrice *= 20;
                     priceInput.setAttribute("data-base-price", basePrice);
 
-                    // Prevent re-rendering the same dropdown if it’s already correct
-                    if (quantitySelect.childElementCount !== price.available_capacity + 1) {
+                    // Set default available capacity to 600 if missing or invalid
+                    let availableCapacity = parseInt(price.available_capacity) || 600;
+
+                    if (quantitySelect.childElementCount !== availableCapacity + 1) {
                         quantitySelect.innerHTML = "";
-                        for (let i = 0; i <= price.available_capacity; i++) {
+                        for (let i = 0; i <= availableCapacity; i++) {
                             let option = document.createElement("option");
                             option.value = i;
                             option.textContent = i;
