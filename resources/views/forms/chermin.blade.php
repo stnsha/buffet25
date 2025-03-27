@@ -21,7 +21,7 @@
                             @if ($pr->id == 7 || $pr->id == 10)
                                 <div class="flex flex-row justify-center">
                                     <span class="text-sm content-start pt-2 md:pt-4">RM</span>
-                                    <span class="text-[35px] md:text-[55px]">59</span>
+                                    <span class="text-[35px] md:text-[55px]">49</span>
                                 </div>
                             @endif
                             <span

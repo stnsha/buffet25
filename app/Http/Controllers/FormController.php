@@ -12,6 +12,7 @@ use App\Models\Venue;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class FormController extends Controller
 {
@@ -19,6 +20,7 @@ class FormController extends Controller
     {
         $prices = Price::where('venue_id', 1)->get();
         $dates = Capacity::where('venue_id', 1)->where('status', 1)->get();
+        $this->updateStatus();
         return view('forms.arena', compact('prices', 'dates'));
     }
 
@@ -40,14 +42,14 @@ class FormController extends Controller
                     return [
                         'id' => $price->id,
                         'name' => $price->name,
-                        'current_price' => $isDiscounted ? 59 : $price->normal_price,
+                        'current_price' => $isDiscounted ? 49 : $price->normal_price,
                         'description' => $price->description,
                         'available_capacity' => $date->available_capacity,
                     ];
                 })->toArray(),
             ];
         }
-
+        $this->updateStatus();
         return view('forms.chermin', compact('arr', 'prices'));
     }
 
@@ -122,7 +124,7 @@ class FormController extends Controller
                         if ($value != 0) {
                             $price_id = $matches[1];
                             $price = Price::find($price_id);
-                            $og_price = ($price_id == 3) ? 58 : (($price_id == 7) ? 63 : $price->normal_price);
+                            $og_price = ($price_id == 3 || $price_id == 9) ? 48 : (($price_id == 7 || $price_id == 10) ? 49 : $price->normal_price);
                             if ($price_id == 9) {
                                 $free = floor($value / 20);
                                 $value += $free;
@@ -164,5 +166,16 @@ class FormController extends Controller
     public function failed()
     {
         return view('forms.failed');
+    }
+
+    public function updateStatus()
+    {
+        Log::info('Updating capacities with past venue dates on form');
+
+        $updated = Capacity::where('status', '!=', 2)
+            ->where('venue_date', '<', Carbon::today())
+            ->update(['status' => 2]);
+
+        Log::info('Updated capacity status on form', ['count' => $updated]);
     }
 }

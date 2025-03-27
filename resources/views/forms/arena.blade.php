@@ -11,17 +11,17 @@
                 @foreach ($prices as $pr)
                     @if ($pr->id != 2)
                         <div
-                            class="flex flex-col rounded-3xl bg-[#078287] {{ $pr->id == 3 ? 'p-6' : 'p-5' }} {{ $pr->id == 2 ? 'hidden' : 'block' }} mx-6 mb-3">
+                            class="flex flex-col rounded-3xl bg-[#078287] {{ $pr->id == 3 || $pr->id == 9 ? 'p-6' : 'p-5' }} {{ $pr->id == 2 ? 'hidden' : 'block' }} mx-6 mb-3">
                             <div class="flex flex-row justify-center">
                                 <span
-                                    class="text-sm content-start pt-2 md:pt-4 {{ $pr->id == 3 ? 'text-[#133944]' : '' }}">RM</span>
+                                    class="text-sm content-start pt-2 md:pt-4 {{ $pr->id == 3 || $pr->id == 9 ? 'text-[#133944]' : '' }}">RM</span>
                                 <span
-                                    class="text-[35px] md:text-[55px] {{ $pr->id == 3 ? 'line-through text-[#133944]' : '' }}">{{ $pr->normal_price }}</span>
+                                    class="text-[35px] md:text-[55px] {{ $pr->id == 3 || $pr->id == 9 ? 'line-through text-[#133944]' : '' }}">{{ $pr->normal_price }}</span>
                             </div>
-                            @if ($pr->id == 3)
+                            @if ($pr->id == 3 || $pr->id == 9)
                                 <div class="flex flex-row justify-center">
                                     <span class="text-sm content-start pt-2 md:pt-4">RM</span>
-                                    <span class="text-[35px] md:text-[55px]">58</span>
+                                    <span class="text-[35px] md:text-[55px]">48</span>
                                 </div>
                             @endif
                             <span
@@ -118,8 +118,8 @@
                             <div class="flex flex-col w-full md:w-2/5">
                                 <input type="text" name="{{ $price->id . '_price' }}"
                                     id="{{ $price->id }}_price"
-                                    value="{{ $price->id == 3 ? '58.00' : number_format($price->normal_price, 2) }}"
-                                    data-base-price="{{ $price->id == 3 ? 58.0 : $price->normal_price }}"
+                                    value="{{ $price->id == 3 || $price->id == 9 ? '48.00' : number_format($price->normal_price, 2) }}"
+                                    data-base-price="{{ $price->id == 3 || $price->id == 9 ? 48.0 : $price->normal_price }}"
                                     class="bg-gray-50 rounded-full border-0 text-center" readonly>
                             </div>
                         </div>
