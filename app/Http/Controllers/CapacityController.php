@@ -113,7 +113,7 @@ class CapacityController extends Controller
                 $order_details = [];
                 foreach ($od->order_details as $odt) {
                     $order_details[$od->id][] = [
-                        'price_name' => $odt->price,
+                        'price_name' => $odt->hasPrice->name,
                         'price' => $odt->price,
                         'quantity' => $odt->quantity,
                         'subtotal' => $odt->subtotal
