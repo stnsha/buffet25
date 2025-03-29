@@ -10,8 +10,9 @@ use App\Http\Controllers\VenueController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect()->route('login');
+    return view('welcome');
 });
+
 
 Route::controller(UserAuthController::class)->group(function () {
     Route::get('login', 'index')->name('login');
@@ -26,6 +27,7 @@ Route::group(['prefix' => 'form'], function () {
         Route::post('store', 'store')->name('store');
         Route::get('completed/{order}', 'completed')->name('completed');
         Route::get('failed', 'failed')->name('failed');
+        Route::get('fin', 'fin')->name('fin');
     });
 });
 

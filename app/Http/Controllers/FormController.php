@@ -18,39 +18,42 @@ class FormController extends Controller
 {
     public function arena()
     {
-        $prices = Price::where('venue_id', 1)->get();
-        $dates = Capacity::where('venue_id', 1)->where('status', 1)->get();
-        $this->updateStatus();
-        return view('forms.arena', compact('prices', 'dates'));
+        return redirect('/');
+        // $prices = Price::where('venue_id', 1)->get();
+        // $dates = Capacity::where('venue_id', 1)->where('status', 1)->get();
+        // $this->updateStatus();
+        // return view('forms.arena', compact('prices', 'dates'));
     }
 
     public function chermin()
     {
-        $prices = Price::where('venue_id', 2)->get();
-        $dates = Capacity::where('venue_id', 2)->where('status', 1)->get();
-        $arr = [];
-        foreach ($dates as $date) {
-            // $isWeekday = Carbon::parse($date->venue_date)->isWeekday();
-            $display_date = Carbon::parse($date->venue_date)->locale('ms_MY')->format('l, d M Y, g:i a');
 
-            $arr[] = [
-                'date_id' => $date->id,
-                'date' => $display_date,
-                'available_capacity' => $date->available_capacity,
-                'prices' => $prices->map(function ($price) use ($date) {
-                    $isDiscounted = in_array($price->id, [7, 10]);
-                    return [
-                        'id' => $price->id,
-                        'name' => $price->name,
-                        'current_price' => $isDiscounted ? 49 : $price->normal_price,
-                        'description' => $price->description,
-                        'available_capacity' => $date->available_capacity,
-                    ];
-                })->toArray(),
-            ];
-        }
-        $this->updateStatus();
-        return view('forms.chermin', compact('arr', 'prices'));
+        return redirect('/');
+        // $prices = Price::where('venue_id', 2)->get();
+        // $dates = Capacity::where('venue_id', 2)->where('status', 1)->get();
+        // $arr = [];
+        // foreach ($dates as $date) {
+        //     // $isWeekday = Carbon::parse($date->venue_date)->isWeekday();
+        //     $display_date = Carbon::parse($date->venue_date)->locale('ms_MY')->format('l, d M Y, g:i a');
+
+        //     $arr[] = [
+        //         'date_id' => $date->id,
+        //         'date' => $display_date,
+        //         'available_capacity' => $date->available_capacity,
+        //         'prices' => $prices->map(function ($price) use ($date) {
+        //             $isDiscounted = in_array($price->id, [7, 10]);
+        //             return [
+        //                 'id' => $price->id,
+        //                 'name' => $price->name,
+        //                 'current_price' => $isDiscounted ? 49 : $price->normal_price,
+        //                 'description' => $price->description,
+        //                 'available_capacity' => $date->available_capacity,
+        //             ];
+        //         })->toArray(),
+        //     ];
+        // }
+        // $this->updateStatus();
+        // return view('forms.chermin', compact('arr', 'prices'));
     }
 
     public function store(ReservationRequest $request)
@@ -177,5 +180,10 @@ class FormController extends Controller
             ->update(['status' => 2]);
 
         Log::info('Updated capacity status on form', ['count' => $updated]);
+    }
+
+    public function fin()
+    {
+        return view('welcome');
     }
 }
